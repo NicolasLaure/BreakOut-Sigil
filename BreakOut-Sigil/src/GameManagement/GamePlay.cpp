@@ -1,6 +1,7 @@
 #include "GameManagement/Gameplay.h"
 #include "GameManagement/Utilities.h"
 #include "GameManagement/GameData.h"
+#include "GameManagement/Screen.h"
 
 static GameData gd;
 
@@ -36,7 +37,7 @@ void GameLoop(bool enteredNewScene, Scenes& scene)
 void GameStart()
 {
 	const int paddleSpacingFromBottom = 40;
-	gd.paddle.rect.position = { static_cast<float>(GetScreenWidth()) / 2 - gd.paddle.rect.width / 2, static_cast<float>(GetScreenHeight() - paddleSpacingFromBottom) };
+	gd.paddle.rect.position = { mainScreen.screenWidth / 2 - gd.paddle.rect.width / 2, 0 + paddleSpacingFromBottom };
 }
 
 void GameUpdate()

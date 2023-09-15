@@ -2,6 +2,7 @@
 #include "GameManagement/Menu.h"
 #include "GameManagement/SceneManager.h"
 #include "Gameplay.h"
+#include "GameManagement/Screen.h"
 using namespace std;
 
 static SceneManager sceneManager;
@@ -18,7 +19,7 @@ void RunProgram()
 
 void Initialize()
 {
-	slWindow(1280, 720, "Elemental Pong", 1);
+	slWindow(mainScreen.screenWidth, mainScreen.screenHeight, "Elemental Pong", 1);
 
 	sceneManager.scene = Scenes::Menu;
 	sceneManager.prevScene = Scenes::GameQuit;

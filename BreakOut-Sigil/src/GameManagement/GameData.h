@@ -11,4 +11,5 @@ struct GameData
 
 	bool isGameOver = false;
 	bool justRestarted = false;
+
 };
