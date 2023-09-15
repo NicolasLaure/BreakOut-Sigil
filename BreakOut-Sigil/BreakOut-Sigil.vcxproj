@@ -157,6 +157,7 @@
     <ClCompile Include="src\Objects\Paddle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\GameManagement\Color.h" />
     <ClInclude Include="src\GameManagement\GameData.h" />
     <ClInclude Include="src\GameManagement\GameLoop.h" />
     <ClInclude Include="src\GameManagement\Gameplay.h" />

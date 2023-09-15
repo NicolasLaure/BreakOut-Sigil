@@ -63,5 +63,8 @@
     <ClInclude Include="src\Objects\Paddle.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameManagement\Color.h">
+      <Filter>GameManagement</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
