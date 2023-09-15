@@ -10,7 +10,7 @@ static SceneManager sceneManager;
 void Initialize();
 void ProgramLoop();
 
-void RunProgram()
+void RunGame()
 {
 	Initialize();
 	ProgramLoop();
@@ -19,7 +19,7 @@ void RunProgram()
 
 void Initialize()
 {
-	slWindow(mainScreen.screenWidth, mainScreen.screenHeight, "Elemental Pong", 1);
+	slWindow(mainScreen.screenWidth, mainScreen.screenHeight, "Elemental Pong", 0);
 
 	sceneManager.scene = Scenes::Menu;
 	sceneManager.prevScene = Scenes::GameQuit;
@@ -33,7 +33,8 @@ void ProgramLoop()
 {
 	do
 	{
-		sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
+		slRender();
+		/*sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
 		sceneManager.prevScene = sceneManager.scene;
 
 		switch (sceneManager.scene)
@@ -52,6 +53,6 @@ void ProgramLoop()
 			break;
 		default:
 			break;
-		}
+		}*/
 	} while (sceneManager.scene != Scenes::GameQuit && !slShouldClose());
 }

@@ -101,6 +101,9 @@
       <AdditionalLibraryDirectories>$(SolutionDir)lib\sigil-vc2015\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sigil.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)lib\sigil-vc2015\dll" "$(OutDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -164,6 +167,7 @@
     <ClInclude Include="src\GameManagement\Menu.h" />
     <ClInclude Include="src\GameManagement\SceneManager.h" />
     <ClInclude Include="src\GameManagement\Scenes.h" />
+    <ClInclude Include="src\GameManagement\Screen.h" />
     <ClInclude Include="src\GameManagement\Utilities.h" />
     <ClInclude Include="src\Objects\Ball.h" />
     <ClInclude Include="src\Objects\Button.h" />

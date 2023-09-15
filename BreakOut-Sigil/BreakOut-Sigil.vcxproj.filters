@@ -66,5 +66,8 @@
     <ClInclude Include="src\GameManagement\Color.h">
       <Filter>GameManagement</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameManagement\Screen.h">
+      <Filter>GameManagement</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
