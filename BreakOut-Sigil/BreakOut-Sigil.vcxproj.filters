@@ -8,6 +8,9 @@
     <Filter Include="GameManagement">
       <UniqueIdentifier>{a9cf5c61-2bff-47c6-a9ab-cce80b7b13ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{3cde5140-cfc0-492b-8002-eff448c87657}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -16,22 +19,49 @@
     <ClCompile Include="src\GameManagement\GameLoop.cpp">
       <Filter>GameManagement</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameManagement\GamePlay.cpp">
+    <ClCompile Include="src\GameManagement\Gameplay.cpp">
       <Filter>GameManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameManagement\Menu.cpp">
+      <Filter>GameManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\Ball.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\Paddle.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\GameManagement\GameData.h">
+      <Filter>GameManagement</Filter>
+    </ClInclude>
     <ClInclude Include="src\GameManagement\GameLoop.h">
       <Filter>GameManagement</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameManagement\GamePlay.h">
+    <ClInclude Include="src\GameManagement\Gameplay.h">
+      <Filter>GameManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameManagement\Menu.h">
       <Filter>GameManagement</Filter>
     </ClInclude>
     <ClInclude Include="src\GameManagement\SceneManager.h">
       <Filter>GameManagement</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameManagement\Scenes.h">
+      <Filter>GameManagement</Filter>
+    </ClInclude>
     <ClInclude Include="src\GameManagement\Utilities.h">
       <Filter>GameManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\Ball.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\Button.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\Paddle.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

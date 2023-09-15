@@ -1,6 +1,11 @@
 #pragma once
-#include "raylib.h"
-#include "raymath.h"
+#include "sl.h"
+#include "GameManagement/Color.h"
+struct Vector2
+{
+	int x{};
+	int y{};
+};
 
 struct Rect
 {
@@ -8,3 +13,5 @@ struct Rect
 	float height{};
 	float width{};
 };
+
+Color WHITE = { 252,252,252 };

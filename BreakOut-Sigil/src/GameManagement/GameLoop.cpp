@@ -1,7 +1,7 @@
-#include "GameManagement/ProgramLoop.h"
+#include "GameManagement/GameLoop.h"
 #include "GameManagement/Menu.h"
 #include "GameManagement/SceneManager.h"
-#include "Game.h"
+#include "Gameplay.h"
 using namespace std;
 
 static SceneManager sceneManager;
@@ -13,14 +13,12 @@ void RunProgram()
 {
 	Initialize();
 	ProgramLoop();
-	CloseWindow();
+	slClose();
 }
 
 void Initialize()
 {
-	InitWindow(1280, 720, "Elemental Pong");
-	SetExitKey(NULL);
-	SetRandomSeed(NULL);
+	slWindow(1280, 720, "Elemental Pong", 1);
 
 	sceneManager.scene = Scenes::Menu;
 	sceneManager.prevScene = Scenes::GameQuit;
@@ -54,5 +52,5 @@ void ProgramLoop()
 		default:
 			break;
 		}
-	} while (sceneManager.scene != Scenes::GameQuit && !WindowShouldClose());
+	} while (sceneManager.scene != Scenes::GameQuit && !slShouldClose());
 }
