@@ -1,7 +1,6 @@
 #include "GameManagement/Gameplay.h"
 #include "GameManagement/Utilities.h"
 #include "GameManagement/GameData.h"
-#include "GameManagement/Screen.h"
 
 static GameData gd;
 
@@ -36,35 +35,32 @@ void GameLoop(bool enteredNewScene, Scenes& scene)
 
 void GameStart()
 {
+	slSetBackColor(colors::WHITE.r, colors::WHITE.g, colors::WHITE.b);
 	const int paddleSpacingFromBottom = 40;
-	gd.paddle.rect.position = { mainScreen.screenWidth / 2 - gd.paddle.rect.width / 2, 0 + paddleSpacingFromBottom };
+	gd.paddle.rect.position = { GetScreenWidth() / 2 - gd.paddle.rect.width / 2, 0 + paddleSpacingFromBottom };
 }
 
 void GameUpdate()
 {
-	if (IsKeyDown(KEY_D))
+	Vector2 paddleNewPos = { Clampf(0, GetScreenWidth(), slGetMouseX()), 0 };
+	PadTranslate(gd.paddle, paddleNewPos);
+	/*if (IsKeyDown(KEY_D))
 		PadMove(gd.paddle, { 1,0 });
 	else if (IsKeyDown(KEY_A))
-		PadMove(gd.paddle, { -1,0 });
+		PadMove(gd.paddle, { -1,0 });*/
 }
 
 void GameDraw()
 {
-	BeginDrawing();
-
-	ClearBackground(WHITE);
-
-	DrawCircle(gd.ball.position.x + gd.ball.size / 2, gd.ball.position.y + gd.ball.size / 2, gd.ball.size, gd.ball.color);
-	DrawRectangleRounded({ gd.paddle.rect.position.x, gd.paddle.rect.position.y,  gd.paddle.rect.width,  gd.paddle.rect.height }, 0.5f, 0, gd.paddle.color);
-
-	EndDrawing();
+	BallDraw(gd.ball);
+	PaddleDraw(gd.paddle);
 }
 
 void PauseUpdate(Scenes& scene)
 {
 	if (gd.areRulesBeingShown)
 	{
-		if (GetKeyPressed())
+		if (slGetKey(SL_KEY_ENTER))
 		{
 			gd.isPaused = false;
 			gd.areRulesBeingShown = false;
@@ -72,33 +68,34 @@ void PauseUpdate(Scenes& scene)
 	}
 	else if (gd.isGameOver)
 	{
-		if (IsKeyPressed(KEY_ESCAPE))
+		if (slGetKey(SL_KEY_ESCAPE))
 		{
 			gd.isGameOver = false;
 			scene = Scenes::Menu;
 		}
-		else if (IsKeyPressed(KEY_SPACE))
+		else if (slGetKey(32))
 		{
 			gd.justRestarted = true;
 		}
 	}
 	else
 	{
-		if (IsKeyPressed(KEY_ESCAPE))
+		if (slGetKey(SL_KEY_ESCAPE))
 			gd.isPaused = false;
 
-		if (IsKeyPressed(KEY_SPACE))
+		if (slGetKey(32))
 			scene = Scenes::Menu;
 	}
 }
 void PauseDraw()
 {
-	BeginDrawing();
 
-	Color panelColor = BLACK;
+	Color panelColor = colors::BLACK;
+	slSetForeColor(panelColor.r, panelColor.g, panelColor.b, 1.0f);
 	if (!gd.areRulesBeingShown)
-		panelColor = ColorAlpha(panelColor, 0.010f);
-	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), panelColor);
+		slSetForeColor(panelColor.r, panelColor.g, panelColor.b, 0.010f);
+
+	slRectangleFill(gd.paddle.rect.position.x, gd.paddle.rect.position.y, gd.paddle.rect.width, gd.paddle.rect.height);
 
 	int titleWindowLimitSpacing = 20;
 	int pressKeyWindowLimitSpacing = 80;
@@ -114,9 +111,12 @@ void PauseDraw()
 
 		int rulesPositionY = GetScreenHeight() / 3 + 120;
 
-		DrawText(rulesTitle, GetScreenWidth() / 2 - MeasureText(rulesTitle, titleSize) / 2, titleWindowLimitSpacing, titleSize, WHITE);
-		DrawText(winConditionText, GetScreenWidth() / 2 - MeasureText(winConditionText, rulesSize) / 2, GetScreenHeight() / 2, rulesSize, WHITE);
-		DrawText(pressAnyKeyText, GetScreenWidth() / 2 - MeasureText(pressAnyKeyText, rulesSize) / 2, GetScreenHeight() - pressKeyWindowLimitSpacing, rulesSize, WHITE);
+		slSetForeColor(colors::WHITE.r, colors::WHITE.g, colors::WHITE.b, 1);
+		slSetFontSize(titleSize);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(rulesTitle) / 2, titleWindowLimitSpacing, rulesTitle);
+		slSetFontSize(rulesSize);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(winConditionText) / 2, GetScreenWidth() / 2, winConditionText);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(pressAnyKeyText) / 2, GetScreenHeight() - pressKeyWindowLimitSpacing, pressAnyKeyText);
 	}
 	else
 	{
@@ -125,9 +125,11 @@ void PauseDraw()
 
 		const char* backToMenuText = "Press Space to go to Main Menu";
 		int backToMenuSize = 60;
-		DrawText(pauseTitle, GetScreenWidth() / 2 - MeasureText(pauseTitle, titleSize) / 2, titleWindowLimitSpacing, titleSize, WHITE);
-		DrawText(backToMenuText, GetScreenWidth() / 2 - MeasureText(backToMenuText, backToMenuSize) / 2, GetScreenHeight() - pressKeyWindowLimitSpacing, backToMenuSize, WHITE);
-	}
 
-	EndDrawing();
+		slSetForeColor(colors::WHITE.r, colors::WHITE.g, colors::WHITE.b, 1);
+		slSetFontSize(titleSize);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(pauseTitle) / 2, titleWindowLimitSpacing, pauseTitle);
+		slSetFontSize(backToMenuSize);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(backToMenuText) / 2, GetScreenWidth() - pressKeyWindowLimitSpacing, backToMenuText);
+	}
 }

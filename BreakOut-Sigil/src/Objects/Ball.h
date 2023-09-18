@@ -1,6 +1,6 @@
 #pragma once
-#include "Objects/Paddle.h"
-
+#include "GameManagement/Utilities.h"
+#include "GameManagement/Color.h"
 struct Ball
 {
 public:
@@ -13,9 +13,8 @@ public:
 	float prevSpeed = 500;
 	float speedIncrement = 30;
 	float maxSpeed = 1000;
-	Paddle lastPaddleHitted;
 
-	Color color = BLACK;
+	Color color = colors::BLACK;
 };
 
 void BallInit(Ball& ball);
@@ -23,7 +22,7 @@ void BallUpdate(Ball& ball);
 
 void RandomServe(Ball& ball, bool isFirstServe);
 
-void BallDraw(Ball ball);
+void BallDraw(Ball& ball);
 
 void BallSwitchDirY(Ball& ball);
-void BallSwitchDirX(Ball& ball, Paddle player);
+void BallSwitchDirX(Ball& ball);

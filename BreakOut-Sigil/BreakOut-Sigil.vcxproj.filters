@@ -31,6 +31,12 @@
     <ClCompile Include="src\Objects\Paddle.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameManagement\Utilities.cpp">
+      <Filter>GameManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameManagement\Screen.cpp">
+      <Filter>GameManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GameManagement\GameData.h">

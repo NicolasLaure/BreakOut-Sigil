@@ -20,6 +20,7 @@ struct MenuData
 		{{0,0}, Scenes::GameQuit,"Exit Game"}
 	};
 
+	bool isMousePressed = false;
 	int windowLimitSpacing = 20;
 	Button creditsButton = { {0,0}, Scenes::Menu, credits };
 };

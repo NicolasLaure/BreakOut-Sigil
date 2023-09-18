@@ -1,7 +1,7 @@
 #include "GameManagement/GameLoop.h"
 #include "GameManagement/Menu.h"
 #include "GameManagement/SceneManager.h"
-#include "Gameplay.h"
+#include "GameManagement/Gameplay.h"
 #include "GameManagement/Screen.h"
 using namespace std;
 
@@ -19,8 +19,9 @@ void RunGame()
 
 void Initialize()
 {
-	slWindow(mainScreen.screenWidth, mainScreen.screenHeight, "Elemental Pong", 0);
+	slWindow(GetScreenWidth(), GetScreenHeight(), "Elemental Pong", 0);
 
+	slSetFont(0, 10);
 	sceneManager.scene = Scenes::Menu;
 	sceneManager.prevScene = Scenes::GameQuit;
 	sceneManager.enteredNewScene = false;
@@ -34,7 +35,7 @@ void ProgramLoop()
 	do
 	{
 		slRender();
-		/*sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
+		sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
 		sceneManager.prevScene = sceneManager.scene;
 
 		switch (sceneManager.scene)
@@ -53,6 +54,6 @@ void ProgramLoop()
 			break;
 		default:
 			break;
-		}*/
+		}
 	} while (sceneManager.scene != Scenes::GameQuit && !slShouldClose());
 }

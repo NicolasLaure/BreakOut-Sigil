@@ -10,14 +10,18 @@ void PadInit(Paddle& paddle, Vector2 position, bool isPlayerOne)
 void PadMove(Paddle& paddle, Vector2 dir)
 {
 	if (paddle.rect.position.x >= 0 && paddle.rect.position.x + paddle.rect.width <= GetScreenWidth())
-		paddle.rect.position = Vector2Add(paddle.rect.position, Vector2Scale(dir, paddle.speed * GetFrameTime()));
+		paddle.rect.position = Vector2Add(paddle.rect.position, Vector2Scale(dir, paddle.speed * slGetDeltaTime()));
 	else if (paddle.rect.position.x < 0)
 		paddle.rect.position.x = 0;
 	else if (paddle.rect.position.x + paddle.rect.width > GetScreenWidth())
 		paddle.rect.position.x = GetScreenWidth() - paddle.rect.width;
 }
-
+void PadTranslate(Paddle& paddle, Vector2 newPosition)
+{
+	paddle.rect.position = newPosition;
+}
 void PaddleDraw(Paddle paddle)
 {
-	DrawRectangle(paddle.rect.position.x, paddle.rect.position.y, paddle.rect.width, paddle.rect.height, paddle.color);
+	slSetForeColor(paddle.color.r, paddle.color.g, paddle.color.b, 1.0f);
+	slRectangleFill(paddle.rect.position.x, paddle.rect.position.y, paddle.rect.width, paddle.rect.height);
 }

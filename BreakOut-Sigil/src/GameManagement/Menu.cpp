@@ -1,4 +1,7 @@
 #include "GameManagement/Menu.h"
+
+#include <iostream>
+
 static MenuData menuData;
 
 void ButtonCollisionCheck(Button& button);
@@ -9,12 +12,14 @@ void MenuStart()
 	menuData.title = "Elemental Pong";
 	Vector2 textSize;
 
-	textSize = MeasureTextEx(GetFontDefault(), menuData.creditsButton.text, menuData.creditsButton.fontSize, menuData.creditsButton.fontSize * 0.1f);
-	menuData.creditsButton.buttonRect = { { static_cast<float>(GetScreenWidth() - MeasureText(menuData.credits, menuData.creditsSize) - menuData.windowLimitSpacing), static_cast<float>(GetScreenHeight() - menuData.creditsSize - menuData.windowLimitSpacing) },textSize.y, textSize.x };
+	slSetFontSize(menuData.creditsSize);
+	textSize = { static_cast<float>(slGetTextWidth(menuData.creditsButton.text)),  static_cast<float>(slGetTextHeight(menuData.creditsButton.text)) };
+	menuData.creditsButton.buttonRect = { { static_cast<float>(GetScreenWidth() - slGetTextWidth(menuData.credits) - menuData.windowLimitSpacing), static_cast<float>(GetScreenHeight() - menuData.creditsSize - menuData.windowLimitSpacing) },textSize.y, textSize.x };
 
+	slSetFontSize(menuData.scenesButtons[0].fontSize);
 	for (int i = 0; i < menuData.buttonsQty; i++)
 	{
-		textSize = MeasureTextEx(GetFontDefault(), menuData.scenesButtons[i].text, menuData.scenesButtons[i].fontSize, menuData.scenesButtons[i].fontSize * 0.1f);
+		textSize = { static_cast<float>(slGetTextWidth(menuData.scenesButtons[i].text)),  static_cast<float>(slGetTextHeight(menuData.scenesButtons[i].text)) };
 		menuData.scenesButtons[i].buttonRect = { {menuData.scenesButtons[i].textPositionX, static_cast<float>(GetScreenHeight()) / 3 + i * menuData.scenesButtons[i].fontSize * menuData.scenesButtons[i].textHeightSpacerMultiplier}, textSize.y, textSize.x };
 	}
 }
@@ -25,23 +30,29 @@ void MenuUpdate(Scenes& scene)
 	{
 		ButtonCollisionCheck(button, scene);
 	}
+
+	if (!slGetMouseButton(0))
+		menuData.isMousePressed = false;
 }
 
 void ButtonCollisionCheck(Button& button, Scenes& scene)
 {
-	Vector2 mousePos = GetMousePosition();
+	Vector2 mousePos = { slGetMouseX(), slGetMouseY() };
 	if (mousePos.x > button.buttonRect.position.x
 		&& mousePos.x <  button.buttonRect.position.x + button.buttonRect.width
 		&& mousePos.y > button.buttonRect.position.y
 		&& mousePos.y < button.buttonRect.position.y + button.buttonRect.height)
 	{
-		button.currentTextColor = GRAY;
-		if (IsMouseButtonDown(0))
+		button.currentTextColor = colors::GRAY;
+		if (slGetMouseButton(0))
 		{
-			button.currentTextColor = DARKGRAY;
+			menuData.isMousePressed = true;
+			button.currentTextColor = colors::DARK_GRAY;
 		}
-		if (IsMouseButtonReleased(0))
+
+		if (!slGetMouseButton(0) && menuData.isMousePressed)
 		{
+			menuData.isMousePressed = false;
 			scene = button.sceneTo;
 		}
 	}
@@ -51,21 +62,27 @@ void ButtonCollisionCheck(Button& button, Scenes& scene)
 
 void ButtonCollisionCheck(Button& button)
 {
-	Vector2 mousePos = GetMousePosition();
+	Vector2 mousePos = { slGetMouseX(), slGetMouseY() };
+
 
 	if (mousePos.x > button.buttonRect.position.x
 		&& mousePos.x <  button.buttonRect.position.x + button.buttonRect.width
 		&& mousePos.y > button.buttonRect.position.y
 		&& mousePos.y < button.buttonRect.position.y + button.buttonRect.height)
 	{
-		button.currentTextColor = GRAY;
-		if (IsMouseButtonDown(0))
+		button.currentTextColor = colors::GRAY;
+
+		//mouse down
+		if (slGetMouseButton(0))
 		{
-			button.currentTextColor = DARKGRAY;
+			menuData.isMousePressed = true;
+			button.currentTextColor = colors::DARK_GRAY;
 		}
-		if (IsMouseButtonReleased(0))
+		//mouse release 
+		if (!slGetMouseButton(0) && menuData.isMousePressed)
 		{
-			OpenURL("https://nico-drake.itch.io/");
+			menuData.isMousePressed = false;
+			system("Chrome https://nico-drake.itch.io/ ");
 		}
 	}
 	else
@@ -74,16 +91,22 @@ void ButtonCollisionCheck(Button& button)
 
 void MenuDraw()
 {
-	BeginDrawing();
+	slSetBackColor(colors::BLACK.r, colors::BLACK.g, colors::BLACK.b);
 
-	ClearBackground(BLACK);
-	DrawText(menuData.title, GetScreenWidth() / 2 - MeasureText(menuData.title, menuData.titleSize) / 2, menuData.windowLimitSpacing, menuData.titleSize, WHITE);
-	DrawText(menuData.credits, menuData.creditsButton.buttonRect.position.x, menuData.creditsButton.buttonRect.position.y, menuData.creditsSize, menuData.creditsButton.currentTextColor);
+	slSetFontSize(menuData.titleSize);
+	slSetForeColor(colors::WHITE.r, colors::WHITE.g, colors::WHITE.b, 1);
+	slText(GetScreenWidth() / 2 - slGetTextWidth(menuData.title) / 2, menuData.windowLimitSpacing, menuData.title);
+
+	slSetFontSize(menuData.creditsSize);
+	slSetForeColor(menuData.creditsButton.currentTextColor.r, menuData.creditsButton.currentTextColor.g, menuData.creditsButton.currentTextColor.b, 1);
+	slText(menuData.creditsButton.buttonRect.position.x, menuData.creditsButton.buttonRect.position.y, menuData.credits);
 
 	for (Button& button : menuData.scenesButtons)
 	{
-		DrawRectangle(button.buttonRect.position.x, button.buttonRect.position.y, button.buttonRect.width, button.buttonRect.height, BLACK);
-		DrawText(button.text, button.buttonRect.position.x, button.buttonRect.position.y, button.fontSize, button.currentTextColor);
+		slSetFontSize(button.fontSize);
+		slSetBackColor(colors::BLACK.r, colors::BLACK.g, colors::BLACK.b);
+		slRectangleFill(button.buttonRect.position.x, button.buttonRect.position.y, button.buttonRect.width, button.buttonRect.height);
+		slSetForeColor(button.currentTextColor.r, button.currentTextColor.g, button.currentTextColor.b, 1);
+		slText(button.buttonRect.position.x, button.buttonRect.position.y, button.text);
 	}
-	EndDrawing();
 }

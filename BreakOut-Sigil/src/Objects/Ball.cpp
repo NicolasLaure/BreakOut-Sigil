@@ -10,17 +10,18 @@ void BallInit(Ball& ball)
 
 void BallUpdate(Ball& ball)
 {
-	ball.position = Vector2Add(ball.position, Vector2Scale(ball.dir, ball.speed * GetFrameTime()));
+	ball.position = Vector2Add(ball.position, Vector2Scale(ball.dir, ball.speed * slGetDeltaTime()));
 }
 
-void BallDraw(Ball ball)
+void BallDraw(Ball& ball)
 {
-	DrawRectangle(ball.position.x, ball.position.y, ball.size, ball.size, ball.color);
+	slSetForeColor(ball.color.r, ball.color.g, ball.color.b, 1.0f);
+	slCircleFill(ball.position.x - ball.size / 2, ball.position.y - ball.size / 2, ball.size, 20);
 }
 
 void RandomServe(Ball& ball, bool isFirstServe)
 {
-	float value = 0;
+	/*float value = 0;
 	float randX;
 	if (isFirstServe)
 	{
@@ -47,7 +48,7 @@ void RandomServe(Ball& ball, bool isFirstServe)
 	}
 
 	float randY = value;
-	ball.dir = Vector2Normalize({ randX, randY });
+	ball.dir = Vector2Normalize({ randX, randY });*/
 }
 
 void BallSwitchDirY(Ball& ball)
@@ -64,7 +65,7 @@ void BallSwitchDirY(Ball& ball)
 	}
 }
 
-void BallSwitchDirX(Ball& ball, Paddle player)
+void BallSwitchDirX(Ball& ball)
 {
 	ball.dir.x *= -1;
 	if (ball.speed + 20 <= ball.maxSpeed)
