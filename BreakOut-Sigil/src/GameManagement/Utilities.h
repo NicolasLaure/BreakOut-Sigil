@@ -2,6 +2,7 @@
 #include "sl.h"
 #include "GameManagement/Color.h"
 #include <math.h>
+
 struct Vector2
 {
 	float x{};

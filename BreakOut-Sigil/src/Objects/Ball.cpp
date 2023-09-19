@@ -81,24 +81,23 @@ void ResetBall(Ball& ball)
 
 void DirOscillation(Ball& ball)
 {
-
-	float x = ball.dir.x;
+	float angle = acosf(ball.dir.x);
 
 	float rotationSpeed = 1 * slGetDeltaTime();
 
-	if (x + rotationSpeed >= 1)
+	if (angle + rotationSpeed >= deg2rad(180.0f))
 		ball.dirIncreasing = false;
-	else if (x - rotationSpeed <= -1)
+	else if (angle - rotationSpeed <= 0)
 		ball.dirIncreasing = true;
 
 	if (ball.dirIncreasing)
-		x += rotationSpeed;
+		angle += rotationSpeed;
 	else
-		x -= rotationSpeed;
+		angle -= rotationSpeed;
 
-	x = Clampf(-1.0f, 1.0f, x);
+	angle = Clampf(0.0f, deg2rad(180.0f), angle);
 
-	ball.dir = { x, static_cast<float>(1 - sqrt(pow(x, 2)))};
+	ball.dir = { cosf(angle), sinf(angle) };
 }
 
 void DirDraw(Ball& ball)
