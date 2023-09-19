@@ -13,6 +13,11 @@ void PauseDraw();
 
 void ResetGameStats();
 
+void CollisionUpdate();
+void BallBorderCollision();
+void BallPaddleCollision(Ball& ball, Paddle& player);
+
+
 void GameLoop(bool enteredNewScene, Scenes& scene)
 {
 
@@ -44,7 +49,7 @@ void GameUpdate()
 {
 	if (gd.objectsCanMove)
 	{
-		Vector2 paddleNewPos = { Clampf(0 + gd.player.rect.width, GetScreenWidth() - gd.player.rect.width, slGetMouseX()),  gd.player.paddleSpacingFromBottom };
+		Vector2 paddleNewPos = { Clampf(0 + gd.player.rect.width / 2, GetScreenWidth() - gd.player.rect.width / 2, slGetMouseX()),  gd.player.paddleSpacingFromBottom };
 		PadTranslate(gd.player, paddleNewPos);
 
 		if (slGetKey(SL_KEY_ESCAPE) && gd.isEscapePressed == false)
@@ -69,14 +74,13 @@ void GameUpdate()
 			DirDraw(gd.ball);
 		}
 	}
-	/*if (IsKeyDown(KEY_D))
-		PadMove(gd.paddle, { 1,0 });
-	else if (IsKeyDown(KEY_A))
-		PadMove(gd.paddle, { -1,0 });*/
+
+	CollisionUpdate();
 }
 
 void GameDraw()
 {
+	slSetBackColor(colors.LIGHT_GRAY.r, colors.LIGHT_GRAY.g, colors.LIGHT_GRAY.b);
 	BallDraw(gd.ball);
 	PaddleDraw(gd.player);
 }
@@ -124,9 +128,8 @@ void PauseUpdate(Scenes& scene)
 
 void PauseDraw()
 {
-
 	Color panelColor = colors.BLACK;
-	slSetForeColor(panelColor.r, panelColor.g, panelColor.b, 1.0f);
+	slSetForeColor(panelColor.r, panelColor.g, panelColor.b, 0.5f);
 	if (!gd.areRulesBeingShown)
 		slSetForeColor(panelColor.r, panelColor.g, panelColor.b, 0.010f);
 
@@ -165,6 +168,67 @@ void PauseDraw()
 		slText(GetScreenWidth() / 2 - slGetTextWidth(pauseTitle) / 2, GetScreenHeight() - titleWindowLimitSpacing - slGetTextHeight(pauseTitle) / 2, pauseTitle);
 		slSetFontSize(backToMenuSize);
 		slText(GetScreenWidth() / 2 - slGetTextWidth(backToMenuText) / 2, 0 + pressKeyWindowLimitSpacing, backToMenuText);
+	}
+}
+
+void CollisionUpdate()
+{
+	BallBorderCollision();
+	BallPaddleCollision(gd.ball, gd.player);
+	/*if (gd.isPowerUpSpawned)
+		BallPowerUpCollision();*/
+}
+
+void BallBorderCollision()
+{
+	if (gd.ball.position.y <= 0)
+	{
+		ResetBall(gd.ball);
+		ResetPlayer(gd.player);
+		gd.objectsCanMove = false;
+		gd.lives--;
+		if (gd.lives <= 0)
+		{
+			gd.isGameOver = true;
+			return;
+		}
+
+		BallSwitchDirY(gd.ball);
+	}
+	else if (gd.ball.position.y + gd.ball.size >= GetScreenHeight())
+	{
+		gd.ball.position.y = GetScreenHeight() - gd.ball.size;
+		BallSwitchDirY(gd.ball);
+	}
+
+	if (gd.ball.position.x - gd.ball.size <= 0)
+	{
+		gd.ball.position.x = 0 + gd.ball.size;
+		BallSwitchDirX(gd.ball);
+	}
+	else if (gd.ball.position.x >= GetScreenWidth())
+	{
+		gd.ball.position.x = GetScreenWidth() - gd.ball.size;
+		BallSwitchDirX(gd.ball);
+	}
+}
+
+void BallPaddleCollision(Ball& ball, Paddle& player)
+{
+	if (ball.position.x + ball.size >= player.rect.position.x - player.rect.width / 2
+		&& ball.position.x <= player.rect.position.x + player.rect.width / 2
+		&& ball.position.y + ball.size >= player.rect.position.y - player.rect.width / 2
+		&& ball.position.y <= player.rect.position.y + player.rect.height / 2)
+	{
+		ball.position.y = player.rect.position.y + (player.rect.height / 2) + ball.size;
+		float angle = atanf((ball.position.x - player.rect.position.x) / (player.rect.height / 2 - player.rect.position.y)) + deg2rad(90);
+
+		float maxAngle = 175.0f;
+		float minAngle = 5.0f;
+
+		angle = Clampf(deg2rad(minAngle), deg2rad(maxAngle), angle);
+
+		ball.dir = { cosf(angle), sinf(angle) };
 	}
 }
 

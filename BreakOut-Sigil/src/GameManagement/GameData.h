@@ -17,5 +17,6 @@ struct GameData
 	bool isEscapePressed = false;
 
 	int score = 0;
+	int lives = 3;
 	bool hasWon = false;
 };

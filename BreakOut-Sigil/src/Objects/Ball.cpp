@@ -55,23 +55,12 @@ void RandomServe(Ball& ball, bool isFirstServe)
 
 void BallSwitchDirY(Ball& ball)
 {
-	if (ball.position.y <= 0)
-	{
-		ball.position.y = 0;
-		ball.dir.y *= -1;
-	}
-	else if (ball.position.y + ball.size >= GetScreenHeight())
-	{
-		ball.position.y = GetScreenHeight() - ball.size;
-		ball.dir.y *= -1;
-	}
+	ball.dir.y *= -1;
 }
 
 void BallSwitchDirX(Ball& ball)
 {
 	ball.dir.x *= -1;
-	if (ball.speed + 20 <= ball.maxSpeed)
-		ball.speed += 20;
 }
 
 void ResetBall(Ball& ball)

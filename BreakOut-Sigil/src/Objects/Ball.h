@@ -8,12 +8,12 @@ public:
 	Vector2 position{};
 	Vector2 startPosition{};
 	Vector2 dir = {-1,0};
-	float size = 25;
-	float baseSpeed = 500;
-	float speed = 500;
-	float prevSpeed = 500;
+	float size = 10;
+	float baseSpeed = 1000;
+	float speed = 1000;
+	float prevSpeed = 1000;
 	float speedIncrement = 30;
-	float maxSpeed = 1000;
+	float maxSpeed = 2500;
 
 	bool dirIncreasing = false;
 

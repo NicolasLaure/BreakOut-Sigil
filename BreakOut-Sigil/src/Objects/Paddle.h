@@ -9,7 +9,7 @@ public:
 	Rect rect = { {}, 25, 200 };
 	float baseSpeed = 1000;
 	float speed = 1000;
-	Color color = colors.LIGHT_GRAY;
+	Color color = colors.WHITE;
 	bool isModified = false;
 
 	const int paddleSpacingFromBottom = 40;
