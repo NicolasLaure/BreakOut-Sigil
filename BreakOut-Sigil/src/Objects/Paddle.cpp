@@ -25,3 +25,8 @@ void PaddleDraw(Paddle paddle)
 	slSetForeColor(paddle.color.r, paddle.color.g, paddle.color.b, 1.0f);
 	slRectangleFill(paddle.rect.position.x, paddle.rect.position.y, paddle.rect.width, paddle.rect.height);
 }
+
+void ResetPlayer(Paddle& player)
+{
+
+}

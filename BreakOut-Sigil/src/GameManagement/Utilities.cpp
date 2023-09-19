@@ -13,11 +13,11 @@ float Clampf(float min, float max, float value)
 
 Vector2 Vector2Add(Vector2 firstVector, Vector2 secondVector)
 {
-return { firstVector.x + secondVector.x, firstVector.y + secondVector.y };
+	return { firstVector.x + secondVector.x, firstVector.y + secondVector.y };
 }
 
 Vector2 Vector2Scale(Vector2 vector, float scaleMultiplier)
 {
-	return {vector.x * scaleMultiplier, vector.y * scaleMultiplier};
+	return { vector.x * scaleMultiplier, vector.y * scaleMultiplier };
 }
 

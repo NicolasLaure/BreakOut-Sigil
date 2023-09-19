@@ -5,7 +5,7 @@ void BallInit(Ball& ball)
 	ball.startPosition = { static_cast<float>(GetScreenWidth()) / 2, static_cast<float>(GetScreenHeight() / 2 - ball.size / 2) };
 	ball.position = ball.startPosition;
 
-	RandomServe(ball, true);
+	//RandomServe(ball, true);
 }
 
 void BallUpdate(Ball& ball)
@@ -72,3 +72,7 @@ void BallSwitchDirX(Ball& ball)
 		ball.speed += 20;
 }
 
+void ResetBall(Ball& ball)
+{
+	ball.position = ball.startPosition;
+}

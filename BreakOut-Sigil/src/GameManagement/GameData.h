@@ -11,5 +11,10 @@ struct GameData
 
 	bool isGameOver = false;
 	bool justRestarted = false;
+	bool areRulesShown = false;
 
+	bool isEscapePressed = false;
+
+	int score = 0;
+	bool hasWon = false;
 };

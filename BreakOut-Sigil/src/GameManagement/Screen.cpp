@@ -1,7 +1,7 @@
 #include "GameManagement/Screen.h"
 
 
-static Screen mainScreen = { 640,480 };
+static Screen mainScreen = { 1280,720 };
 
 int GetScreenWidth()
 {

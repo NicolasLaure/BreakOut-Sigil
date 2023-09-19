@@ -14,7 +14,7 @@ struct Rect
 	float width{};
 };
 
-Color WHITE = { 252,252,252 };
+static Colors colors;
 
 float Clampf(float min, float max, float value);
 

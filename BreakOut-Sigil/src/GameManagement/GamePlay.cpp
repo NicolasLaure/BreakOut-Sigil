@@ -11,7 +11,6 @@ void GameDraw();
 void PauseUpdate(Scenes& scene);
 void PauseDraw();
 
-
 void GameLoop(bool enteredNewScene, Scenes& scene)
 {
 
@@ -35,15 +34,22 @@ void GameLoop(bool enteredNewScene, Scenes& scene)
 
 void GameStart()
 {
-	slSetBackColor(colors::WHITE.r, colors::WHITE.g, colors::WHITE.b);
-	const int paddleSpacingFromBottom = 40;
-	gd.paddle.rect.position = { GetScreenWidth() / 2 - gd.paddle.rect.width / 2, 0 + paddleSpacingFromBottom };
+	gd.isPaused = true;
+	gd.paddle.rect.position = { GetScreenWidth() / 2 - gd.paddle.rect.width / 2, 0.0f + gd.paddle.paddleSpacingFromBottom };
 }
 
 void GameUpdate()
 {
-	Vector2 paddleNewPos = { Clampf(0, GetScreenWidth(), slGetMouseX()), 0 };
+	Vector2 paddleNewPos = { Clampf(0 + gd.paddle.rect.width, GetScreenWidth() - gd.paddle.rect.width, slGetMouseX()),  gd.paddle.paddleSpacingFromBottom };
 	PadTranslate(gd.paddle, paddleNewPos);
+
+	if (slGetKey(SL_KEY_ESCAPE) && gd.isEscapePressed == false)
+	{
+		gd.isPaused = true;
+		gd.isEscapePressed = true;
+	}
+	else if(!slGetKey(SL_KEY_ESCAPE))
+		gd.isEscapePressed = false;
 	/*if (IsKeyDown(KEY_D))
 		PadMove(gd.paddle, { 1,0 });
 	else if (IsKeyDown(KEY_A))
@@ -68,37 +74,47 @@ void PauseUpdate(Scenes& scene)
 	}
 	else if (gd.isGameOver)
 	{
-		if (slGetKey(SL_KEY_ESCAPE))
+		if (slGetKey(SL_KEY_ESCAPE) && gd.isEscapePressed == false)
 		{
 			gd.isGameOver = false;
+			gd.isEscapePressed = true;
 			scene = Scenes::Menu;
 		}
-		else if (slGetKey(32))
+		else if(!slGetKey(SL_KEY_ESCAPE))
+			gd.isEscapePressed = false;
+
+		if (slGetKey(32))
 		{
 			gd.justRestarted = true;
 		}
 	}
 	else
 	{
-		if (slGetKey(SL_KEY_ESCAPE))
+		if (slGetKey(SL_KEY_ESCAPE) && gd.isEscapePressed == false)
+		{
 			gd.isPaused = false;
+			gd.isEscapePressed = true;
+		}
+		else if(!slGetKey(SL_KEY_ESCAPE))
+			gd.isEscapePressed = false;
 
 		if (slGetKey(32))
 			scene = Scenes::Menu;
 	}
 }
+
 void PauseDraw()
 {
 
-	Color panelColor = colors::BLACK;
+	Color panelColor = colors.BLACK;
 	slSetForeColor(panelColor.r, panelColor.g, panelColor.b, 1.0f);
 	if (!gd.areRulesBeingShown)
 		slSetForeColor(panelColor.r, panelColor.g, panelColor.b, 0.010f);
 
 	slRectangleFill(gd.paddle.rect.position.x, gd.paddle.rect.position.y, gd.paddle.rect.width, gd.paddle.rect.height);
 
-	int titleWindowLimitSpacing = 20;
-	int pressKeyWindowLimitSpacing = 80;
+	int titleWindowLimitSpacing = 40;
+	int pressKeyWindowLimitSpacing = 60;
 
 	if (gd.areRulesBeingShown)
 	{
@@ -109,27 +125,41 @@ void PauseDraw()
 		const char* pressAnyKeyText = "Press any key to start the game";
 
 
-		int rulesPositionY = GetScreenHeight() / 3 + 120;
+		int rulesPositionY = GetScreenHeight() / 3 - 120;
 
-		slSetForeColor(colors::WHITE.r, colors::WHITE.g, colors::WHITE.b, 1);
+		slSetForeColor(colors.WHITE.r, colors.WHITE.g, colors.WHITE.b, 1);
 		slSetFontSize(titleSize);
 		slText(GetScreenWidth() / 2 - slGetTextWidth(rulesTitle) / 2, titleWindowLimitSpacing, rulesTitle);
 		slSetFontSize(rulesSize);
 		slText(GetScreenWidth() / 2 - slGetTextWidth(winConditionText) / 2, GetScreenWidth() / 2, winConditionText);
-		slText(GetScreenWidth() / 2 - slGetTextWidth(pressAnyKeyText) / 2, GetScreenHeight() - pressKeyWindowLimitSpacing, pressAnyKeyText);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(pressAnyKeyText) / 2, 0 + pressKeyWindowLimitSpacing, pressAnyKeyText);
 	}
 	else
 	{
 		const char* pauseTitle = "Game is Paused";
-		int titleSize = 120;
+		int titleSize = 80;
 
 		const char* backToMenuText = "Press Space to go to Main Menu";
-		int backToMenuSize = 60;
+		int backToMenuSize = 40;
 
-		slSetForeColor(colors::WHITE.r, colors::WHITE.g, colors::WHITE.b, 1);
+		slSetForeColor(colors.WHITE.r, colors.WHITE.g, colors.WHITE.b, 1);
 		slSetFontSize(titleSize);
-		slText(GetScreenWidth() / 2 - slGetTextWidth(pauseTitle) / 2, titleWindowLimitSpacing, pauseTitle);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(pauseTitle) / 2, GetScreenHeight() - titleWindowLimitSpacing - slGetTextHeight(pauseTitle) / 2, pauseTitle);
 		slSetFontSize(backToMenuSize);
-		slText(GetScreenWidth() / 2 - slGetTextWidth(backToMenuText) / 2, GetScreenWidth() - pressKeyWindowLimitSpacing, backToMenuText);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(backToMenuText) / 2, 0 + pressKeyWindowLimitSpacing, backToMenuText);
 	}
+}
+
+void ResetGameStats()
+{
+	gd.score = 0;
+	gd.isGameOver = false;
+	gd.hasWon = false;
+	gd.isPaused = true;
+	gd.areRulesShown = true;
+	//gd.isPowerUpSpawned = false;
+	gd.ball.speed = gd.ball.baseSpeed;
+	//gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
+	ResetBall(gd.ball);
+	ResetPlayer(gd.paddle);
 }

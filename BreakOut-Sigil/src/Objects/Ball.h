@@ -1,6 +1,7 @@
 #pragma once
 #include "GameManagement/Utilities.h"
 #include "GameManagement/Color.h"
+
 struct Ball
 {
 public:
@@ -14,7 +15,7 @@ public:
 	float speedIncrement = 30;
 	float maxSpeed = 1000;
 
-	Color color = colors::BLACK;
+	Color color = colors.BLACK;
 };
 
 void BallInit(Ball& ball);
@@ -26,3 +27,6 @@ void BallDraw(Ball& ball);
 
 void BallSwitchDirY(Ball& ball);
 void BallSwitchDirX(Ball& ball);
+
+void ResetBall(Ball& ball);
+

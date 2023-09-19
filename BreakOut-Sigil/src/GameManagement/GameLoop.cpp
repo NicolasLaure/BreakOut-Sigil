@@ -21,7 +21,9 @@ void Initialize()
 {
 	slWindow(GetScreenWidth(), GetScreenHeight(), "Elemental Pong", 0);
 
-	slSetFont(0, 10);
+
+	int font = slLoadFont("assets/ZenDots-Regular.ttf");
+	slSetFont(font, 20);
 	sceneManager.scene = Scenes::Menu;
 	sceneManager.prevScene = Scenes::GameQuit;
 	sceneManager.enteredNewScene = false;
@@ -34,7 +36,6 @@ void ProgramLoop()
 {
 	do
 	{
-		slRender();
 		sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
 		sceneManager.prevScene = sceneManager.scene;
 
@@ -55,5 +56,8 @@ void ProgramLoop()
 		default:
 			break;
 		}
+
+		slRender();
+
 	} while (sceneManager.scene != Scenes::GameQuit && !slShouldClose());
 }
