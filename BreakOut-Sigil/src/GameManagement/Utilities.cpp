@@ -21,3 +21,9 @@ Vector2 Vector2Scale(Vector2 vector, float scaleMultiplier)
 	return { vector.x * scaleMultiplier, vector.y * scaleMultiplier };
 }
 
+static const double PI = 4.0 * atan(1.0);
+
+float deg2rad(double deg)
+{
+	return deg * PI / 180.0;
+}

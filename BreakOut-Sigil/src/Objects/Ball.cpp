@@ -1,10 +1,12 @@
 #include "Objects/Ball.h"
+#include <math.h>
 
 void BallInit(Ball& ball)
 {
-	ball.startPosition = { static_cast<float>(GetScreenWidth()) / 2, static_cast<float>(GetScreenHeight() / 2 - ball.size / 2) };
+	ball.startPosition = { static_cast<float>(GetScreenWidth()) / 2, 100.0f };
 	ball.position = ball.startPosition;
 
+	ball.dir = { 0,1 };
 	//RandomServe(ball, true);
 }
 
@@ -16,7 +18,7 @@ void BallUpdate(Ball& ball)
 void BallDraw(Ball& ball)
 {
 	slSetForeColor(ball.color.r, ball.color.g, ball.color.b, 1.0f);
-	slCircleFill(ball.position.x - ball.size / 2, ball.position.y - ball.size / 2, ball.size, 20);
+	slCircleFill(ball.position.x, ball.position.y, ball.size, 50);
 }
 
 void RandomServe(Ball& ball, bool isFirstServe)
@@ -75,4 +77,31 @@ void BallSwitchDirX(Ball& ball)
 void ResetBall(Ball& ball)
 {
 	ball.position = ball.startPosition;
+}
+
+void DirOscillation(Ball& ball)
+{
+
+	float x = ball.dir.x;
+
+	float rotationSpeed = 1 * slGetDeltaTime();
+
+	if (x + rotationSpeed >= 1)
+		ball.dirIncreasing = false;
+	else if (x - rotationSpeed <= -1)
+		ball.dirIncreasing = true;
+
+	if (ball.dirIncreasing)
+		x += rotationSpeed;
+	else
+		x -= rotationSpeed;
+
+	x = Clampf(-1.0f, 1.0f, x);
+
+	ball.dir = { x, static_cast<float>(1 - sqrt(pow(x, 2)))};
+}
+
+void DirDraw(Ball& ball)
+{
+	slLine(ball.position.x, ball.position.y, ball.position.x + ball.dir.x * 100, ball.position.y + ball.dir.y * 100);
 }

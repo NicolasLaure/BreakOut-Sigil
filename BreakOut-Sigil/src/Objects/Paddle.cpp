@@ -28,5 +28,5 @@ void PaddleDraw(Paddle paddle)
 
 void ResetPlayer(Paddle& player)
 {
-
+  player.rect.position = { GetScreenWidth() / 2.0f, 0.0f + player.paddleSpacingFromBottom };
 }

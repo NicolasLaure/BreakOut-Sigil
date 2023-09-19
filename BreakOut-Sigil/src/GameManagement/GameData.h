@@ -6,12 +6,13 @@ struct GameData
 {
 	bool areRulesBeingShown = false;
 	bool isPaused = false;
-	Paddle paddle{};
+	Paddle player{};
 	Ball ball{};
 
 	bool isGameOver = false;
 	bool justRestarted = false;
 	bool areRulesShown = false;
+	bool objectsCanMove = false;
 
 	bool isEscapePressed = false;
 

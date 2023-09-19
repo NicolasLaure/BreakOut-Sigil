@@ -11,6 +11,8 @@ void GameDraw();
 void PauseUpdate(Scenes& scene);
 void PauseDraw();
 
+void ResetGameStats();
+
 void GameLoop(bool enteredNewScene, Scenes& scene)
 {
 
@@ -34,22 +36,39 @@ void GameLoop(bool enteredNewScene, Scenes& scene)
 
 void GameStart()
 {
-	gd.isPaused = true;
-	gd.paddle.rect.position = { GetScreenWidth() / 2 - gd.paddle.rect.width / 2, 0.0f + gd.paddle.paddleSpacingFromBottom };
+	BallInit(gd.ball);
+	ResetGameStats();
 }
 
 void GameUpdate()
 {
-	Vector2 paddleNewPos = { Clampf(0 + gd.paddle.rect.width, GetScreenWidth() - gd.paddle.rect.width, slGetMouseX()),  gd.paddle.paddleSpacingFromBottom };
-	PadTranslate(gd.paddle, paddleNewPos);
-
-	if (slGetKey(SL_KEY_ESCAPE) && gd.isEscapePressed == false)
+	if (gd.objectsCanMove)
 	{
-		gd.isPaused = true;
-		gd.isEscapePressed = true;
+		Vector2 paddleNewPos = { Clampf(0 + gd.player.rect.width, GetScreenWidth() - gd.player.rect.width, slGetMouseX()),  gd.player.paddleSpacingFromBottom };
+		PadTranslate(gd.player, paddleNewPos);
+
+		if (slGetKey(SL_KEY_ESCAPE) && gd.isEscapePressed == false)
+		{
+			gd.isPaused = true;
+			gd.isEscapePressed = true;
+		}
+		else if (!slGetKey(SL_KEY_ESCAPE))
+			gd.isEscapePressed = false;
+
+		BallUpdate(gd.ball);
 	}
-	else if(!slGetKey(SL_KEY_ESCAPE))
-		gd.isEscapePressed = false;
+	else
+	{
+		if (slGetKey(32))
+		{
+			gd.objectsCanMove = true;
+		}
+		else
+		{
+			DirOscillation(gd.ball);
+			DirDraw(gd.ball);
+		}
+	}
 	/*if (IsKeyDown(KEY_D))
 		PadMove(gd.paddle, { 1,0 });
 	else if (IsKeyDown(KEY_A))
@@ -59,7 +78,7 @@ void GameUpdate()
 void GameDraw()
 {
 	BallDraw(gd.ball);
-	PaddleDraw(gd.paddle);
+	PaddleDraw(gd.player);
 }
 
 void PauseUpdate(Scenes& scene)
@@ -80,7 +99,7 @@ void PauseUpdate(Scenes& scene)
 			gd.isEscapePressed = true;
 			scene = Scenes::Menu;
 		}
-		else if(!slGetKey(SL_KEY_ESCAPE))
+		else if (!slGetKey(SL_KEY_ESCAPE))
 			gd.isEscapePressed = false;
 
 		if (slGetKey(32))
@@ -95,7 +114,7 @@ void PauseUpdate(Scenes& scene)
 			gd.isPaused = false;
 			gd.isEscapePressed = true;
 		}
-		else if(!slGetKey(SL_KEY_ESCAPE))
+		else if (!slGetKey(SL_KEY_ESCAPE))
 			gd.isEscapePressed = false;
 
 		if (slGetKey(32))
@@ -111,7 +130,7 @@ void PauseDraw()
 	if (!gd.areRulesBeingShown)
 		slSetForeColor(panelColor.r, panelColor.g, panelColor.b, 0.010f);
 
-	slRectangleFill(gd.paddle.rect.position.x, gd.paddle.rect.position.y, gd.paddle.rect.width, gd.paddle.rect.height);
+	slRectangleFill(gd.player.rect.position.x, gd.player.rect.position.y, gd.player.rect.width, gd.player.rect.height);
 
 	int titleWindowLimitSpacing = 40;
 	int pressKeyWindowLimitSpacing = 60;
@@ -123,7 +142,6 @@ void PauseDraw()
 		int rulesSize = 40;
 		const char* winConditionText = "destroy all bricks to win";
 		const char* pressAnyKeyText = "Press any key to start the game";
-
 
 		int rulesPositionY = GetScreenHeight() / 3 - 120;
 
@@ -155,11 +173,12 @@ void ResetGameStats()
 	gd.score = 0;
 	gd.isGameOver = false;
 	gd.hasWon = false;
-	gd.isPaused = true;
+	gd.isPaused = false;
 	gd.areRulesShown = true;
 	//gd.isPowerUpSpawned = false;
 	gd.ball.speed = gd.ball.baseSpeed;
+	gd.objectsCanMove = false;
 	//gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
 	ResetBall(gd.ball);
-	ResetPlayer(gd.paddle);
+	ResetPlayer(gd.player);
 }
