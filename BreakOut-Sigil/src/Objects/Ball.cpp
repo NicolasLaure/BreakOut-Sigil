@@ -83,11 +83,14 @@ void DirOscillation(Ball& ball)
 {
 	float angle = acosf(ball.dir.x);
 
+	float maxAngle = 175.0f;
+	float minAngle = 5.0f;
+
 	float rotationSpeed = 1 * slGetDeltaTime();
 
-	if (angle + rotationSpeed >= deg2rad(180.0f))
+	if (angle + rotationSpeed >= deg2rad(maxAngle))
 		ball.dirIncreasing = false;
-	else if (angle - rotationSpeed <= 0)
+	else if (angle - rotationSpeed <= deg2rad(minAngle))
 		ball.dirIncreasing = true;
 
 	if (ball.dirIncreasing)
@@ -95,7 +98,7 @@ void DirOscillation(Ball& ball)
 	else
 		angle -= rotationSpeed;
 
-	angle = Clampf(0.0f, deg2rad(180.0f), angle);
+	angle = Clampf(deg2rad(minAngle), deg2rad(maxAngle), angle);
 
 	ball.dir = { cosf(angle), sinf(angle) };
 }
