@@ -220,7 +220,7 @@ void BallPaddleCollision(Ball& ball, Paddle& player)
 {
 	if (ball.position.x + ball.size >= player.rect.position.x - player.rect.width / 2
 		&& ball.position.x <= player.rect.position.x + player.rect.width / 2
-		&& ball.position.y + ball.size >= player.rect.position.y - player.rect.width / 2
+		&& ball.position.y + ball.size >= player.rect.position.y - player.rect.height / 2
 		&& ball.position.y <= player.rect.position.y + player.rect.height / 2)
 	{
 		ball.position.y = player.rect.position.y + (player.rect.height / 2) + ball.size;
@@ -243,7 +243,7 @@ void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
 	{
 		if (ball.position.x + ball.size >= bricks[i].rect.position.x - bricks[i].rect.width / 2
 			&& ball.position.x <= bricks[i].rect.position.x + bricks[i].rect.width / 2
-			&& ball.position.y + ball.size >= bricks[i].rect.position.y - bricks[i].rect.width / 2
+			&& ball.position.y + ball.size >= bricks[i].rect.position.y - bricks[i].rect.height / 2
 			&& ball.position.y <= bricks[i].rect.position.y + bricks[i].rect.height / 2 && bricks[i].isActive)
 		{
 			bricks[i].isActive = false;
