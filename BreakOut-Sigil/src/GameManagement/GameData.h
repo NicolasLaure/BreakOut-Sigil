@@ -11,7 +11,6 @@ struct GameData
 
 	bool isGameOver = false;
 	bool justRestarted = false;
-	bool areRulesShown = false;
 	bool objectsCanMove = false;
 
 	bool isEscapePressed = false;

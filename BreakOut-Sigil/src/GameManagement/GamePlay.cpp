@@ -64,7 +64,7 @@ void GameUpdate()
 	}
 	else
 	{
-		if (slGetKey(32))
+		if (slGetMouseButton(0))
 		{
 			gd.objectsCanMove = true;
 		}
@@ -89,7 +89,7 @@ void PauseUpdate(Scenes& scene)
 {
 	if (gd.areRulesBeingShown)
 	{
-		if (slGetKey(SL_KEY_ENTER))
+		if (slGetKey(32))
 		{
 			gd.isPaused = false;
 			gd.areRulesBeingShown = false;
@@ -128,31 +128,30 @@ void PauseUpdate(Scenes& scene)
 
 void PauseDraw()
 {
-	Color panelColor = colors.BLACK;
-	slSetForeColor(panelColor.r, panelColor.g, panelColor.b, 0.5f);
+	slSetForeColor(colors.BLACK.r, colors.BLACK.g, colors.BLACK.b, 0.10);
+
 	if (!gd.areRulesBeingShown)
-		slSetForeColor(panelColor.r, panelColor.g, panelColor.b, 0.010f);
+		slSetForeColor(colors.BLACK.r, colors.BLACK.g, colors.BLACK.b, 0.10);
 
-	slRectangleFill(gd.player.rect.position.x, gd.player.rect.position.y, gd.player.rect.width, gd.player.rect.height);
+	slRectangleFill(GetScreenWidth() / 2, GetScreenHeight() / 2, GetScreenWidth(), GetScreenHeight());
 
-	int titleWindowLimitSpacing = 40;
+	int titleWindowLimitSpacing = 120;
 	int pressKeyWindowLimitSpacing = 60;
 
 	if (gd.areRulesBeingShown)
 	{
 		const char* rulesTitle = "Rules";
-		int titleSize = 120;
+		int titleSize = 150;
 		int rulesSize = 40;
 		const char* winConditionText = "destroy all bricks to win";
-		const char* pressAnyKeyText = "Press any key to start the game";
+		const char* pressAnyKeyText = "Press space to start the game";
 
-		int rulesPositionY = GetScreenHeight() / 3 - 120;
-
+		int rulesPositionY = GetScreenHeight() / 2 + 50;
 		slSetForeColor(colors.WHITE.r, colors.WHITE.g, colors.WHITE.b, 1);
 		slSetFontSize(titleSize);
-		slText(GetScreenWidth() / 2 - slGetTextWidth(rulesTitle) / 2, titleWindowLimitSpacing, rulesTitle);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(rulesTitle) / 2, GetScreenHeight() - titleWindowLimitSpacing, rulesTitle);
 		slSetFontSize(rulesSize);
-		slText(GetScreenWidth() / 2 - slGetTextWidth(winConditionText) / 2, GetScreenWidth() / 2, winConditionText);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(winConditionText) / 2, rulesPositionY, winConditionText);
 		slText(GetScreenWidth() / 2 - slGetTextWidth(pressAnyKeyText) / 2, 0 + pressKeyWindowLimitSpacing, pressAnyKeyText);
 	}
 	else
@@ -237,8 +236,8 @@ void ResetGameStats()
 	gd.score = 0;
 	gd.isGameOver = false;
 	gd.hasWon = false;
-	gd.isPaused = false;
-	gd.areRulesShown = true;
+	gd.isPaused = true;
+	gd.areRulesBeingShown = true;
 	//gd.isPowerUpSpawned = false;
 	gd.ball.speed = gd.ball.baseSpeed;
 	gd.objectsCanMove = false;

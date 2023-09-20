@@ -90,7 +90,7 @@ void ButtonCollisionCheck(Button& button)
 
 void MenuDraw()
 {
-
+	slSetBackColor(colors.BLACK.r, colors.BLACK.g, colors.BLACK.b);
 	slSetFontSize(menuData.titleSize);
 	slSetForeColor(colors.WHITE.r, colors.WHITE.g, colors.WHITE.b, 1);
 	slText(GetScreenWidth() / 2 - slGetTextWidth(menuData.title) / 2, GetScreenHeight() - menuData.titleLimitSpacing, menuData.title);
