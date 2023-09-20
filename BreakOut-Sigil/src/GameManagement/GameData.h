@@ -1,6 +1,7 @@
 #pragma once
 #include "Objects/Paddle.h"
 #include "Objects/Ball.h"
+#include "Objects/Brick.h"
 
 struct GameData
 {
@@ -18,4 +19,7 @@ struct GameData
 	int score = 0;
 	int lives = 3;
 	bool hasWon = false;
+
+	static const int bricksQty = 50;
+	Brick bricks[bricksQty];
 };

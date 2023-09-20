@@ -9,10 +9,10 @@ public:
 	Vector2 startPosition{};
 	Vector2 dir = {-1,0};
 	float size = 10;
-	float baseSpeed = 1000;
-	float speed = 1000;
-	float prevSpeed = 1000;
-	float speedIncrement = 30;
+	float baseSpeed = 650;
+	float speed = 650;
+	float prevSpeed = 650;
+	float speedIncrement = 100;
 	float maxSpeed = 2500;
 
 	bool dirIncreasing = false;
@@ -34,3 +34,5 @@ void ResetBall(Ball& ball);
 
 void DirOscillation(Ball& ball);
 void DirDraw(Ball& ball);
+
+void BallSpeedUp(Ball& ball);

@@ -2,6 +2,7 @@
 #include "GameManagement/Utilities.h"
 #include "GameManagement/GameData.h"
 
+
 static GameData gd;
 
 void GameStart();
@@ -16,7 +17,7 @@ void ResetGameStats();
 void CollisionUpdate();
 void BallBorderCollision();
 void BallPaddleCollision(Ball& ball, Paddle& player);
-
+void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty);
 
 void GameLoop(bool enteredNewScene, Scenes& scene)
 {
@@ -42,6 +43,7 @@ void GameLoop(bool enteredNewScene, Scenes& scene)
 void GameStart()
 {
 	BallInit(gd.ball);
+	BricksInit(gd.bricks, gd.bricksQty);
 	ResetGameStats();
 }
 
@@ -83,6 +85,7 @@ void GameDraw()
 	slSetBackColor(colors.LIGHT_GRAY.r, colors.LIGHT_GRAY.g, colors.LIGHT_GRAY.b);
 	BallDraw(gd.ball);
 	PaddleDraw(gd.player);
+	BricksDraw(gd.bricks, gd.bricksQty);
 }
 
 void PauseUpdate(Scenes& scene)
@@ -174,6 +177,7 @@ void CollisionUpdate()
 {
 	BallBorderCollision();
 	BallPaddleCollision(gd.ball, gd.player);
+	BallBrickCollision(gd.ball, gd.bricks, gd.bricksQty);
 	/*if (gd.isPowerUpSpawned)
 		BallPowerUpCollision();*/
 }
@@ -228,6 +232,23 @@ void BallPaddleCollision(Ball& ball, Paddle& player)
 		angle = Clampf(deg2rad(minAngle), deg2rad(maxAngle), angle);
 
 		ball.dir = { cosf(angle), sinf(angle) };
+
+		BallSpeedUp(ball);
+	}
+}
+
+void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
+{
+	for(int i = 0; i < bricksQty; i++)
+	{
+		if (ball.position.x + ball.size >= bricks[i].rect.position.x - bricks[i].rect.width / 2
+			&& ball.position.x <= bricks[i].rect.position.x + bricks[i].rect.width / 2
+			&& ball.position.y + ball.size >= bricks[i].rect.position.y - bricks[i].rect.width / 2
+			&& ball.position.y <= bricks[i].rect.position.y + bricks[i].rect.height / 2 && bricks[i].isActive)
+		{
+			bricks[i].isActive = false;
+			BallSwitchDirY(ball);
+		}
 	}
 }
 
@@ -244,4 +265,5 @@ void ResetGameStats()
 	//gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
 	ResetBall(gd.ball);
 	ResetPlayer(gd.player);
+	ResetBricks(gd.bricks, gd.bricksQty);
 }

@@ -170,6 +170,7 @@ xcopy /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClCompile Include="src\GameManagement\Utilities.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\Ball.cpp" />
+    <ClCompile Include="src\Objects\Brick.cpp" />
     <ClCompile Include="src\Objects\Paddle.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@ xcopy /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClInclude Include="src\GameManagement\Screen.h" />
     <ClInclude Include="src\GameManagement\Utilities.h" />
     <ClInclude Include="src\Objects\Ball.h" />
+    <ClInclude Include="src\Objects\Brick.h" />
     <ClInclude Include="src\Objects\Button.h" />
     <ClInclude Include="src\Objects\Paddle.h" />
   </ItemGroup>

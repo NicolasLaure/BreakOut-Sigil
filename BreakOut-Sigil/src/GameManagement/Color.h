@@ -30,9 +30,14 @@ struct Colors
 	const Color RED = { 230.0 / 255, 11.0 / 255, 11.0 / 255 };
 	const Color GREEN = { 27.0 / 255, 194.0 / 255, 33.0 / 255 };
 	const Color BLUE = { 23.0 / 255, 51.0 / 255, 232.0 / 255 };
-	const Color YELLOW = { 235.0 / 255, 213.0 / 255, 16.0 / 255 };
 
 	const Color DARK_BLUE = { 68.0 /255, 68.0 / 255, 145.0 / 255 };
 	const Color LIGHT_BLUE = { 222.0 /255, 222.0 / 255, 252.0 / 255 };
 	const Color BABY_PURPLE = { 164.0 /255, 164.0 / 255, 225.0 / 255 };
+
+	const Color YELLOW = { 240.0 / 255, 207.0 / 255, 62.0 / 255 };
+	const Color ORANGE = { 247.0 / 255, 154.0 / 255, 54.0 / 255 };
+	const Color BRICK = { 224.0 / 255, 80.0 / 255, 61.0 / 255 };
+	const Color CYAN = { 247.0 / 255, 54.0 / 255, 241.0 / 255 };
+	const Color PURPLE = { 102.0 / 255, 52.0 / 255, 237.0 / 255 };
 };

@@ -66,6 +66,7 @@ void BallSwitchDirX(Ball& ball)
 void ResetBall(Ball& ball)
 {
 	ball.position = ball.startPosition;
+	ball.speed = ball.baseSpeed;
 }
 
 void DirOscillation(Ball& ball)
@@ -94,5 +95,11 @@ void DirOscillation(Ball& ball)
 
 void DirDraw(Ball& ball)
 {
+	slSetForeColor(colors.RED.r, colors.RED.g, colors.RED.b, 1);
 	slLine(ball.position.x, ball.position.y, ball.position.x + ball.dir.x * 100, ball.position.y + ball.dir.y * 100);
+}
+
+void BallSpeedUp(Ball& ball)
+{
+	ball.speed += ball.speedIncrement;
 }
