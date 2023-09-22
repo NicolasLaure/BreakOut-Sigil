@@ -78,6 +78,11 @@ void GameUpdate()
 	}
 
 	CollisionUpdate();
+	if (gd.lives <= 0)
+	{
+		gd.isGameOver = true;
+		gd.isPaused = true;
+	}
 }
 
 void GameDraw()
@@ -99,15 +104,18 @@ void PauseUpdate(Scenes& scene)
 {
 	if (gd.areRulesBeingShown)
 	{
-		if (slGetKey(32))
+		if (slGetKey(32) && !gd.isSpacePressed)
 		{
+			gd.isSpacePressed = true;
 			gd.isPaused = false;
 			gd.areRulesBeingShown = false;
 		}
+		else if (!slGetKey(32))
+			gd.isSpacePressed = false;
 	}
 	else if (gd.isGameOver)
 	{
-		if (slGetKey(SL_KEY_ESCAPE) && gd.isEscapePressed == false)
+		if (slGetKey(SL_KEY_ESCAPE) && !gd.isEscapePressed)
 		{
 			gd.isGameOver = false;
 			gd.isEscapePressed = true;
@@ -116,10 +124,14 @@ void PauseUpdate(Scenes& scene)
 		else if (!slGetKey(SL_KEY_ESCAPE))
 			gd.isEscapePressed = false;
 
-		if (slGetKey(32))
+		if (slGetKey(32) && !gd.isSpacePressed)
 		{
+			gd.isSpacePressed = true;
 			gd.justRestarted = true;
 		}
+		else if (!slGetKey(32))
+			gd.isSpacePressed = false;
+
 	}
 	else
 	{
@@ -131,8 +143,13 @@ void PauseUpdate(Scenes& scene)
 		else if (!slGetKey(SL_KEY_ESCAPE))
 			gd.isEscapePressed = false;
 
-		if (slGetKey(32))
+		if (slGetKey(32) && !gd.isSpacePressed)
+		{
+			gd.isSpacePressed = true;
 			scene = Scenes::Menu;
+		}
+		else if (!slGetKey(32))
+			gd.isSpacePressed = false;
 	}
 }
 
@@ -163,6 +180,22 @@ void PauseDraw()
 		slSetFontSize(rulesSize);
 		slText(GetScreenWidth() / 2 - slGetTextWidth(winConditionText) / 2, rulesPositionY, winConditionText);
 		slText(GetScreenWidth() / 2 - slGetTextWidth(pressAnyKeyText) / 2, 0 + pressKeyWindowLimitSpacing, pressAnyKeyText);
+	}
+	else if (gd.isGameOver)
+	{
+		const char* gameOverTitle = "Game Over";
+		int titleSize = 150;
+		int gameOverSize = 40;
+		const char* pressEscapeKeyText = "escape to go back to main menu";
+		const char* pressSpaceKeyText = "space to restart the game";
+
+		int rulesPositionY = GetScreenHeight() / 2 + 50;
+		slSetForeColor(colors.WHITE.r, colors.WHITE.g, colors.WHITE.b, 1);
+		slSetFontSize(titleSize);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(gameOverTitle) / 2, GetScreenHeight() - titleWindowLimitSpacing, gameOverTitle);
+		slSetFontSize(gameOverSize);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(pressEscapeKeyText) / 2, 0 + pressKeyWindowLimitSpacing, pressEscapeKeyText);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(pressSpaceKeyText) / 2, 0 + pressKeyWindowLimitSpacing / 2, pressSpaceKeyText);
 	}
 	else
 	{
@@ -267,6 +300,7 @@ void ResetGameStats()
 {
 	gd.score = 0;
 	gd.isGameOver = false;
+	gd.lives = gd.maxLives;
 	gd.hasWon = false;
 	gd.isPaused = true;
 	gd.areRulesBeingShown = true;

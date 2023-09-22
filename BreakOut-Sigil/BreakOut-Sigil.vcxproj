@@ -105,7 +105,7 @@
       <Command>xcopy /y "$(SolutionDir)lib\sigil-vc2015\dll" "$(OutDir)" 
 cd "$(OutDir)"
 mkdir "assets"
-xcopy /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
+xcopy /s /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
