@@ -18,7 +18,7 @@ void BallUpdate(Ball& ball)
 void BallDraw(Ball& ball)
 {
 	slSetForeColor(ball.color.r, ball.color.g, ball.color.b, 1.0f);
-	slCircleFill(ball.position.x, ball.position.y, ball.size, 50);
+	slCircleFill(ball.position.x, ball.position.y, ball.radius, 50);
 }
 
 void RandomServe(Ball& ball, bool isFirstServe)

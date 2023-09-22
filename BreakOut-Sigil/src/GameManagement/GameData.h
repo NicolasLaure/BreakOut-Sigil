@@ -25,5 +25,6 @@ struct GameData
 	int windowUpperLimit = 80;
 
 	static const int bricksQty = 50;
+	int brokenBricks = 0;
 	Brick bricks[bricksQty];
 };

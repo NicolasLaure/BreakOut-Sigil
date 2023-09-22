@@ -83,6 +83,11 @@ void GameUpdate()
 		gd.isGameOver = true;
 		gd.isPaused = true;
 	}
+	if (gd.brokenBricks >= gd.bricksQty)
+	{
+		gd.isPaused = true;
+		gd.hasWon = true;
+	}
 }
 
 void GameDraw()
@@ -97,7 +102,6 @@ void GameDraw()
 	PaddleDraw(gd.player);
 	BricksDraw(gd.bricks, gd.bricksQty);
 	DrawHud(gd.lives, gd.score, gd.windowUpperLimit);
-
 }
 
 void PauseUpdate(Scenes& scene)
@@ -113,7 +117,7 @@ void PauseUpdate(Scenes& scene)
 		else if (!slGetKey(32))
 			gd.isSpacePressed = false;
 	}
-	else if (gd.isGameOver)
+	else if (gd.isGameOver || gd.hasWon)
 	{
 		if (slGetKey(SL_KEY_ESCAPE) && !gd.isEscapePressed)
 		{
@@ -184,7 +188,23 @@ void PauseDraw()
 	else if (gd.isGameOver)
 	{
 		const char* gameOverTitle = "Game Over";
-		int titleSize = 150;
+		int titleSize = 130;
+		int gameOverSize = 40;
+		const char* pressEscapeKeyText = "escape to go back to main menu";
+		const char* pressSpaceKeyText = "space to restart the game";
+
+		int rulesPositionY = GetScreenHeight() / 2 + 50;
+		slSetForeColor(colors.WHITE.r, colors.WHITE.g, colors.WHITE.b, 1);
+		slSetFontSize(titleSize);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(gameOverTitle) / 2, GetScreenHeight() - titleWindowLimitSpacing, gameOverTitle);
+		slSetFontSize(gameOverSize);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(pressEscapeKeyText) / 2, 0 + pressKeyWindowLimitSpacing, pressEscapeKeyText);
+		slText(GetScreenWidth() / 2 - slGetTextWidth(pressSpaceKeyText) / 2, 0 + pressKeyWindowLimitSpacing / 2, pressSpaceKeyText);
+	}
+	else if (gd.hasWon)
+	{
+		const char* gameOverTitle = "Congratulations You Win!";
+		int titleSize = 130;
 		int gameOverSize = 40;
 		const char* pressEscapeKeyText = "escape to go back to main menu";
 		const char* pressSpaceKeyText = "space to restart the game";
@@ -238,32 +258,32 @@ void BallBorderCollision()
 
 		BallSwitchDirY(gd.ball);
 	}
-	else if (gd.ball.position.y + gd.ball.size >= GetScreenHeight())
+	else if (gd.ball.position.y + gd.ball.radius >= GetScreenHeight() - gd.windowUpperLimit)
 	{
-		gd.ball.position.y = GetScreenHeight() - gd.ball.size;
+		gd.ball.position.y = GetScreenHeight() - gd.windowUpperLimit - gd.ball.radius;
 		BallSwitchDirY(gd.ball);
 	}
 
-	if (gd.ball.position.x - gd.ball.size <= 0)
+	if (gd.ball.position.x - gd.ball.radius <= 0)
 	{
-		gd.ball.position.x = 0 + gd.ball.size;
+		gd.ball.position.x = 0 + gd.ball.radius;
 		BallSwitchDirX(gd.ball);
 	}
 	else if (gd.ball.position.x >= GetScreenWidth())
 	{
-		gd.ball.position.x = GetScreenWidth() - gd.ball.size;
+		gd.ball.position.x = GetScreenWidth() - gd.ball.radius;
 		BallSwitchDirX(gd.ball);
 	}
 }
 
 void BallPaddleCollision(Ball& ball, Paddle& player)
 {
-	if (ball.position.x + ball.size >= player.rect.position.x - player.rect.width / 2
+	if (ball.position.x + ball.radius >= player.rect.position.x - player.rect.width / 2
 		&& ball.position.x <= player.rect.position.x + player.rect.width / 2
-		&& ball.position.y + ball.size >= player.rect.position.y - player.rect.height / 2
+		&& ball.position.y + ball.radius >= player.rect.position.y - player.rect.height / 2
 		&& ball.position.y <= player.rect.position.y + player.rect.height / 2)
 	{
-		ball.position.y = player.rect.position.y + (player.rect.height / 2) + ball.size;
+		ball.position.y = player.rect.position.y + (player.rect.height / 2) + ball.radius;
 		float angle = atanf((ball.position.x - player.rect.position.x) / (player.rect.height / 2 - player.rect.position.y)) + deg2rad(90);
 
 		float maxAngle = 175.0f;
@@ -285,13 +305,40 @@ void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
 {
 	for (int i = 0; i < bricksQty; i++)
 	{
-		if (ball.position.x + ball.size >= bricks[i].rect.position.x - bricks[i].rect.width / 2 && 
-			ball.position.x - ball.size <= bricks[i].rect.position.x + bricks[i].rect.width / 2 &&
-			ball.position.y + ball.size >= bricks[i].rect.position.y - bricks[i].rect.height / 2 &&
-			ball.position.y - ball.size <= bricks[i].rect.position.y + bricks[i].rect.height / 2 && bricks[i].isActive)
+		float brickLeft = bricks[i].rect.position.x - bricks[i].rect.width / 2;
+		float brickRight = bricks[i].rect.position.x + bricks[i].rect.width / 2;
+		float brickUp = bricks[i].rect.position.y + bricks[i].rect.height / 2;
+		float brickDown = bricks[i].rect.position.y - bricks[i].rect.height / 2;
+
+		if (ball.position.x + ball.radius >= brickLeft &&
+			ball.position.x - ball.radius <= brickRight &&
+			ball.position.y + ball.radius >= brickDown &&
+			ball.position.y - ball.radius <= brickUp && bricks[i].isActive)
 		{
+			if (ball.position.x - ball.radius < brickLeft && ball.position.y < brickUp && ball.position.y > brickDown)
+			{
+				ball.position.x = brickLeft - ball.radius;
+				BallSwitchDirX(ball);
+			}
+			else if (ball.position.x + ball.radius > brickRight && ball.position.y < brickUp && ball.position.y > brickDown)
+			{
+				ball.position.x = brickRight + ball.radius;
+				BallSwitchDirX(ball);
+			}
+			else if (ball.position.y + ball.radius > brickUp && ball.position.x < brickRight && ball.position.x > brickLeft)
+			{
+				ball.position.y = brickUp + ball.radius;
+				BallSwitchDirY(ball);
+			}
+			else if (ball.position.y - ball.radius < brickDown && ball.position.x < brickRight && ball.position.x > brickLeft)
+			{
+				ball.position.y = brickDown - ball.radius;
+				BallSwitchDirY(ball);
+			}
+
 			bricks[i].isActive = false;
-			BallSwitchDirY(ball);
+			gd.brokenBricks++;
+			break;
 		}
 	}
 }
@@ -307,6 +354,7 @@ void ResetGameStats()
 	//gd.isPowerUpSpawned = false;
 	gd.ball.speed = gd.ball.baseSpeed;
 	gd.objectsCanMove = false;
+	gd.brokenBricks = 0;
 	//gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
 	ResetBall(gd.ball);
 	ResetPlayer(gd.player);

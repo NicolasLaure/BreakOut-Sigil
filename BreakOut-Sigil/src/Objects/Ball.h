@@ -8,7 +8,7 @@ public:
 	Vector2 position{};
 	Vector2 startPosition{};
 	Vector2 dir = {-1,0};
-	float size = 10;
+	float radius = 10;
 	float baseSpeed = 300;
 	float speed = 300;
 	float prevSpeed = 650;
