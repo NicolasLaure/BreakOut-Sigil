@@ -20,6 +20,8 @@ struct GameData
 	int lives = 3;
 	bool hasWon = false;
 
+	int windowUpperLimit = 80;
+
 	static const int bricksQty = 50;
 	Brick bricks[bricksQty];
 };

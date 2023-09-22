@@ -11,4 +11,4 @@ struct Brick
 void BricksDraw(Brick bricks[], int bricksQty);
 
 void BricksInit(Brick bricks[], int bricksQty);
-void ResetBricks(Brick bricks[], int bricksQty);
+void ResetBricks(Brick bricks[], int bricksQty, int windowUpperLimit);

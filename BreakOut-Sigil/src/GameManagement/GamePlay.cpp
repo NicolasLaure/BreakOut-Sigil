@@ -2,6 +2,7 @@
 #include "GameManagement/Utilities.h"
 #include "GameManagement/GameData.h"
 #include "GameManagement/TextureManager.h"
+#include "Objects/Hud.h"
 
 static GameData gd;
 
@@ -90,6 +91,8 @@ void GameDraw()
 
 	PaddleDraw(gd.player);
 	BricksDraw(gd.bricks, gd.bricksQty);
+	DrawHud(gd.lives, gd.score, gd.windowUpperLimit);
+
 }
 
 void PauseUpdate(Scenes& scene)
@@ -273,5 +276,5 @@ void ResetGameStats()
 	//gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
 	ResetBall(gd.ball);
 	ResetPlayer(gd.player);
-	ResetBricks(gd.bricks, gd.bricksQty);
+	ResetBricks(gd.bricks, gd.bricksQty, gd.windowUpperLimit);
 }

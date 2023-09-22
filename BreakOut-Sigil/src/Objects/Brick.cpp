@@ -23,9 +23,9 @@ void BricksInit(Brick bricks[], int bricksQty)
 	}
 }
 
-void ResetBricks(Brick bricks[], int bricksQty)
+void ResetBricks(Brick bricks[], int bricksQty, int windowUpperLimit)
 {
-	int windowSeparation = 15;
+	int windowLateralLimit = 15;
 	int verticalDisplacement = bricks->rect.height + 10;
 	int horizontalDisplacement = bricks->rect.width + 10;
 
@@ -36,8 +36,8 @@ void ResetBricks(Brick bricks[], int bricksQty)
 		{
 			bricks[j].isActive = true;
 
-			bricks[j].rect.position.x = bricks[j].rect.width / 2 + windowSeparation + (horizontalDisplacement) * counter;
-			bricks[j].rect.position.y = GetScreenHeight() - bricks[j].rect.height / 2 - windowSeparation - verticalDisplacement * i;
+			bricks[j].rect.position.x = bricks[j].rect.width / 2 + windowLateralLimit + (horizontalDisplacement) * counter;
+			bricks[j].rect.position.y = GetScreenHeight() - bricks[j].rect.height / 2 - windowUpperLimit - verticalDisplacement * i;
 
 			switch (i)
 			{

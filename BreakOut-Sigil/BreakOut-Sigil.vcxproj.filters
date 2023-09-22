@@ -43,6 +43,9 @@
     <ClCompile Include="src\GameManagement\TextureManager.cpp">
       <Filter>GameManagement</Filter>
     </ClCompile>
+    <ClCompile Include="src\Objects\Hud.cpp">
+      <Filter>GameManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GameManagement\GameData.h">
@@ -85,6 +88,9 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\GameManagement\TextureManager.h">
+      <Filter>GameManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\Hud.h">
       <Filter>GameManagement</Filter>
     </ClInclude>
   </ItemGroup>
