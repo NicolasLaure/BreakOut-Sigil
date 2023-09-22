@@ -1,7 +1,7 @@
 #include "GameManagement/Gameplay.h"
 #include "GameManagement/Utilities.h"
 #include "GameManagement/GameData.h"
-
+#include "GameManagement/TextureManager.h"
 
 static GameData gd;
 
@@ -73,7 +73,6 @@ void GameUpdate()
 		else
 		{
 			DirOscillation(gd.ball);
-			DirDraw(gd.ball);
 		}
 	}
 
@@ -82,8 +81,13 @@ void GameUpdate()
 
 void GameDraw()
 {
-	slSetBackColor(colors.LIGHT_GRAY.r, colors.LIGHT_GRAY.g, colors.LIGHT_GRAY.b);
+	//slSetBackColor(colors.LIGHT_GRAY.r, colors.LIGHT_GRAY.g, colors.LIGHT_GRAY.b);
+	slSetForeColor(colors.WHITE.r, colors.WHITE.g, colors.WHITE.b, 1);
+	slSprite(GetTexture(TextureIdentifier::BackGround), 0 + GetScreenWidth() / 2, 0 + GetScreenHeight() / 2, GetScreenWidth(), GetScreenHeight());
 	BallDraw(gd.ball);
+	if (!gd.objectsCanMove)
+		DirDraw(gd.ball);
+
 	PaddleDraw(gd.player);
 	BricksDraw(gd.bricks, gd.bricksQty);
 }
@@ -234,12 +238,16 @@ void BallPaddleCollision(Ball& ball, Paddle& player)
 		ball.dir = { cosf(angle), sinf(angle) };
 
 		BallSpeedUp(ball);
+		player.isColliding = true;
 	}
+	else
+		player.isColliding = false;
+
 }
 
 void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
 {
-	for(int i = 0; i < bricksQty; i++)
+	for (int i = 0; i < bricksQty; i++)
 	{
 		if (ball.position.x + ball.size >= bricks[i].rect.position.x - bricks[i].rect.width / 2
 			&& ball.position.x <= bricks[i].rect.position.x + bricks[i].rect.width / 2

@@ -101,5 +101,8 @@ void DirDraw(Ball& ball)
 
 void BallSpeedUp(Ball& ball)
 {
-	ball.speed += ball.speedIncrement;
+	if (ball.speed + ball.speedIncrement < ball.maxSpeed)
+		ball.speed += ball.speedIncrement;
+	else
+		ball.speed = ball.maxSpeed;
 }

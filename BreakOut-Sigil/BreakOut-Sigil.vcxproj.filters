@@ -40,6 +40,9 @@
     <ClCompile Include="src\Objects\Brick.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameManagement\TextureManager.cpp">
+      <Filter>GameManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GameManagement\GameData.h">
@@ -80,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="src\Objects\Brick.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameManagement\TextureManager.h">
+      <Filter>GameManagement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

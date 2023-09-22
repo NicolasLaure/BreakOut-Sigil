@@ -1,5 +1,4 @@
 #include "GameManagement/Utilities.h"
-#include "GameManagement/Screen.h"
 
 float Clampf(float min, float max, float value)
 {

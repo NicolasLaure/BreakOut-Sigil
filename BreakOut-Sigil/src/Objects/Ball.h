@@ -9,11 +9,11 @@ public:
 	Vector2 startPosition{};
 	Vector2 dir = {-1,0};
 	float size = 10;
-	float baseSpeed = 650;
-	float speed = 650;
+	float baseSpeed = 300;
+	float speed = 300;
 	float prevSpeed = 650;
 	float speedIncrement = 100;
-	float maxSpeed = 2500;
+	float maxSpeed = 1000;
 
 	bool dirIncreasing = false;
 

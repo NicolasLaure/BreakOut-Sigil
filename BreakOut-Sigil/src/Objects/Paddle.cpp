@@ -1,4 +1,5 @@
 #include "Objects/Paddle.h"
+#include "GameManagement/TextureManager.h"
 
 void PadInit(Paddle& paddle, Vector2 position, bool isPlayerOne)
 {
@@ -23,7 +24,12 @@ void PadTranslate(Paddle& paddle, Vector2 newPosition)
 void PaddleDraw(Paddle paddle)
 {
 	slSetForeColor(paddle.color.r, paddle.color.g, paddle.color.b, 1.0f);
-	slRectangleFill(paddle.rect.position.x, paddle.rect.position.y, paddle.rect.width, paddle.rect.height);
+	if(!paddle.isColliding)
+	slSprite(GetTexture(TextureIdentifier::Paddle), paddle.rect.position.x, paddle.rect.position.y, paddle.rect.width, paddle.rect.height);
+	else
+	slSprite(GetTexture(TextureIdentifier::PaddleHitted), paddle.rect.position.x, paddle.rect.position.y, paddle.rect.width, paddle.rect.height);
+
+	//slRectangleFill(paddle.rect.position.x, paddle.rect.position.y, paddle.rect.width, paddle.rect.height);
 }
 
 void ResetPlayer(Paddle& player)

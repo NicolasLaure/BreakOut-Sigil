@@ -25,7 +25,6 @@ void BricksInit(Brick bricks[], int bricksQty)
 
 void ResetBricks(Brick bricks[], int bricksQty)
 {
-
 	int windowSeparation = 15;
 	int verticalDisplacement = bricks->rect.height + 10;
 	int horizontalDisplacement = bricks->rect.width + 10;
@@ -33,7 +32,7 @@ void ResetBricks(Brick bricks[], int bricksQty)
 	int counter = 0;
 	for (int i = 0; i < bricksQty / 10; i++)
 	{
-		for (int j = i * 10; j < bricksQty; j++)
+		for (int j = i * 10; j < (i + 1) * 10; j++)
 		{
 			bricks[j].isActive = true;
 

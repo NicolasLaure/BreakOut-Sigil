@@ -3,6 +3,7 @@
 #include "GameManagement/SceneManager.h"
 #include "GameManagement/Gameplay.h"
 #include "GameManagement/Screen.h"
+#include "GameManagement/TextureManager.h"
 using namespace std;
 
 static SceneManager sceneManager;
@@ -21,6 +22,7 @@ void Initialize()
 {
 	slWindow(GetScreenWidth(), GetScreenHeight(), "Elemental Pong", 0);
 
+	SetTextures();
 
 	int font = slLoadFont("assets/ZenDots-Regular.ttf");
 	slSetFont(font, 20);

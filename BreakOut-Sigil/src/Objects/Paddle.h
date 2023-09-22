@@ -12,6 +12,7 @@ public:
 	Color color = colors.WHITE;
 	bool isModified = false;
 
+	bool isColliding = false;
 	const int paddleSpacingFromBottom = 40;
 };
 
