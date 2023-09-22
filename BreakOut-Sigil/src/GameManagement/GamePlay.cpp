@@ -285,10 +285,10 @@ void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
 {
 	for (int i = 0; i < bricksQty; i++)
 	{
-		if (ball.position.x + ball.size >= bricks[i].rect.position.x - bricks[i].rect.width / 2
-			&& ball.position.x <= bricks[i].rect.position.x + bricks[i].rect.width / 2
-			&& ball.position.y + ball.size >= bricks[i].rect.position.y - bricks[i].rect.height / 2
-			&& ball.position.y <= bricks[i].rect.position.y + bricks[i].rect.height / 2 && bricks[i].isActive)
+		if (ball.position.x + ball.size >= bricks[i].rect.position.x - bricks[i].rect.width / 2 && 
+			ball.position.x - ball.size <= bricks[i].rect.position.x + bricks[i].rect.width / 2 &&
+			ball.position.y + ball.size >= bricks[i].rect.position.y - bricks[i].rect.height / 2 &&
+			ball.position.y - ball.size <= bricks[i].rect.position.y + bricks[i].rect.height / 2 && bricks[i].isActive)
 		{
 			bricks[i].isActive = false;
 			BallSwitchDirY(ball);
