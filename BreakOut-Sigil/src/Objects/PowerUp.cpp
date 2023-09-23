@@ -15,7 +15,7 @@ void SpeedDown(SlowDown& slowDown, Ball& ball)
 	slowDown.isActive = true;
 	ball.isSlowedDown = true;
 	ball.prevSpeed = ball.speed;
-	ball.speed *= 0.65f;
+	ball.speed *= 0.35f;
 }
 
 void HpUp(int& healthPoints)
