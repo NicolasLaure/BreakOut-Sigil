@@ -1,11 +1,14 @@
 #pragma once
 #include "GameManagement/Utilities.h"
+#include "Objects/PowerUpTypes.h"
 
 struct Brick
 {
 	Rect rect{};
 	Color color{};
 	bool isActive{};
+
+	PowerUpType powerUp{ PowerUpType::None };
 };
 
 void BricksDraw(Brick bricks[], int bricksQty);

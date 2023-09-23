@@ -46,6 +46,9 @@
     <ClCompile Include="src\Objects\Hud.cpp">
       <Filter>GameManagement</Filter>
     </ClCompile>
+    <ClCompile Include="src\Objects\PowerUp.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GameManagement\GameData.h">
@@ -92,6 +95,12 @@
     </ClInclude>
     <ClInclude Include="src\Objects\Hud.h">
       <Filter>GameManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\PowerUp.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\PowerUpTypes.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

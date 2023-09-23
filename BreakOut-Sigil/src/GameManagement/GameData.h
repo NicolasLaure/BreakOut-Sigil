@@ -31,5 +31,7 @@ struct GameData
 	float hitFrameDuration = 0.5f;
 	float hitTimer = 0;
 
+	float powerUpRespawnCoolDown = 5.0f;
+	float powerUpTimer = 0;
 	Brick bricks[bricksQty];
 };

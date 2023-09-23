@@ -9,7 +9,22 @@ void BricksDraw(Brick bricks[], int bricksQty)
 		if (bricks[i].isActive)
 		{
 			slSetForeColor(bricks[i].color.r, bricks[i].color.g, bricks[i].color.b, 1);
-			slSprite(GetTexture(TextureIdentifier::Brick), bricks[i].rect.position.x, bricks[i].rect.position.y, bricks[i].rect.width, bricks[i].rect.height);
+			switch (bricks[i].powerUp)
+			{
+			case PowerUpType::MultiBall:
+				slSprite(GetTexture(TextureIdentifier::BrickMultiBall), bricks[i].rect.position.x, bricks[i].rect.position.y, bricks[i].rect.width, bricks[i].rect.height);
+				break;
+			case PowerUpType::SlowDown:
+				slSprite(GetTexture(TextureIdentifier::BrickSlowDown), bricks[i].rect.position.x, bricks[i].rect.position.y, bricks[i].rect.width, bricks[i].rect.height);
+				break;
+			case PowerUpType::HpUp:
+				slSprite(GetTexture(TextureIdentifier::BrickHpUp), bricks[i].rect.position.x, bricks[i].rect.position.y, bricks[i].rect.width, bricks[i].rect.height);
+				break;
+			case PowerUpType::None:
+			default:
+				slSprite(GetTexture(TextureIdentifier::Brick), bricks[i].rect.position.x, bricks[i].rect.position.y, bricks[i].rect.width, bricks[i].rect.height);
+				break;
+			}
 			//slRectangleFill(bricks[i].rect.position.x, bricks[i].rect.position.y, bricks[i].rect.width, bricks[i].rect.height);
 		}
 	}

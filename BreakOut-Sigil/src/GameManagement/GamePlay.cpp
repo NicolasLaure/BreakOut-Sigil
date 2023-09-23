@@ -3,6 +3,7 @@
 #include "GameManagement/GameData.h"
 #include "GameManagement/TextureManager.h"
 #include "Objects/Hud.h"
+#include "Objects/PowerUp.h"
 
 static GameData gd;
 
@@ -75,6 +76,13 @@ void GameUpdate()
 		{
 			DirOscillation(gd.ball);
 		}
+	}
+
+	gd.powerUpTimer += slGetDeltaTime();
+	if (gd.powerUpTimer >= gd.powerUpRespawnCoolDown)
+	{
+		gd.powerUpTimer = 0;
+		SetPowerUp(gd.bricks, gd.bricksQty);
 	}
 
 	if (gd.hasTakenDamage)
