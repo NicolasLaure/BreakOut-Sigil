@@ -18,7 +18,7 @@ void BricksInit(Brick bricks[], int bricksQty)
 	for (int i = 0; i < bricksQty; i++)
 	{
 		bricks[i].rect.position = { 0, 0 };
-		bricks[i].rect.width = GetScreenWidth() / 11;
+		bricks[i].rect.width = 116;
 		bricks[i].rect.height = 30;
 	}
 }

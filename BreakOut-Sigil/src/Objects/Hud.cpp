@@ -9,7 +9,7 @@ void DrawHud(int playerLives, int score, int upperLimit)
 	int width = GetScreenWidth();
 	float fontSize = height / 2;
 	slSetForeColor(colors.DARK_GRAY.r, colors.DARK_GRAY.g, colors.DARK_GRAY.b, 1);
-	slRectangleFill(0 + width / 2, static_cast<double>(GetScreenHeight()) - upperLimit / 2, width, height);
+	slRectangleFill(0 + width / 2, static_cast<double>(GetScreenHeight()) - height / 2, width, height);
 
 	slSetForeColor(colors.RED.r, colors.RED.g, colors.RED.b, 1);
 	slSetFontSize(fontSize);

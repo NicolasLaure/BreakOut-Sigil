@@ -350,6 +350,10 @@ void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
 				if (ball.dir.y > 0)
 					BallSwitchDirY(ball);
 			}
+			else
+			{
+					BallSwitchDirY(ball);
+			}
 
 			bricks[i].isActive = false;
 			gd.brokenBricks++;
