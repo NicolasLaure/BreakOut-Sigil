@@ -15,6 +15,7 @@ public:
 	float speedIncrement = 100;
 	float maxSpeed = 750;
 
+	bool isSlowedDown = false;
 	bool dirIncreasing = false;
 
 	Color color = colors.BLACK;
@@ -29,6 +30,7 @@ void BallSwitchDirY(Ball& ball);
 void BallSwitchDirX(Ball& ball);
 
 void ResetBall(Ball& ball);
+void ResetBallSpeed(Ball& ball);
 
 void DirOscillation(Ball& ball);
 void DirDraw(Ball& ball);

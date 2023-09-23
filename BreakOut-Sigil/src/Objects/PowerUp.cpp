@@ -2,14 +2,19 @@
 #include "Objects/PowerUpTypes.h"
 #include <iostream>
 
+
+
+
 void MultiBall(bool& isMultiBallActive, Ball ball)
 {
 	isMultiBallActive = true;
 }
 
-void SlowDown(bool& isSlowDownActive, Ball& ball)
+void SpeedDown(SlowDown& slowDown, Ball& ball)
 {
-	isSlowDownActive = true;
+	slowDown.isActive = true;
+	ball.isSlowedDown = true;
+	ball.prevSpeed = ball.speed;
 	ball.speed *= 0.65f;
 }
 
@@ -25,7 +30,32 @@ void SetPowerUp(Brick bricks[], int bricksQty)
 	{
 		randomIndex = rand() % bricksQty;
 	} while (bricks[randomIndex].powerUp != PowerUpType::None || !bricks[randomIndex].isActive);
+	
+	int activePowerUps = 0;
 
-	int randomPowerUp = rand() % static_cast<int>(PowerUpType::None);
-	bricks[randomIndex].powerUp = static_cast<PowerUpType>(randomPowerUp);
+	for (int i = 0; i < bricksQty; i++)
+	{
+		if (bricks[i].powerUp != PowerUpType::None && bricks[i].isActive)
+			activePowerUps++;
+	}
+
+	if (activePowerUps < 3)
+	{
+		int randomPowerUp = rand() % static_cast<int>(PowerUpType::None);
+		bricks[randomIndex].powerUp = static_cast<PowerUpType>(randomPowerUp);
+	}
+}
+
+void PowerUpsUpdate(SlowDown& slowDown, Ball& ball)
+{
+	if (slowDown.isActive)
+	{
+		slowDown.timer += slGetDeltaTime();
+		if (slowDown.timer >= slowDown.duration)
+		{
+			slowDown.isActive = false;
+			slowDown.timer = 0;
+			ResetBallSpeed(ball);
+		}
+	}
 }

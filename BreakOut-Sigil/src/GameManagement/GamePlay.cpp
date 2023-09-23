@@ -90,7 +90,7 @@ void GameUpdate()
 		if (gd.hitTimer >= slGetTime())
 			gd.hasTakenDamage = false;
 	}
-
+	PowerUpsUpdate(gd.slowDownPowerUp, gd.ball);
 	CollisionUpdate();
 	if (gd.lives <= 0)
 	{
@@ -254,8 +254,6 @@ void CollisionUpdate()
 	BallBorderCollision();
 	BallPaddleCollision(gd.ball, gd.player);
 	BallBrickCollision(gd.ball, gd.bricks, gd.bricksQty);
-	/*if (gd.isPowerUpSpawned)
-		BallPowerUpCollision();*/
 }
 
 void BallBorderCollision()
@@ -312,7 +310,9 @@ void BallPaddleCollision(Ball& ball, Paddle& player)
 
 		ball.dir = { cosf(angle), sinf(angle) };
 
-		BallSpeedUp(ball);
+		if (!ball.isSlowedDown)
+			BallSpeedUp(ball);
+
 		player.isColliding = true;
 	}
 	else
@@ -366,6 +366,22 @@ void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
 					BallSwitchDirY(ball);
 			}
 
+			switch (bricks[i].powerUp)
+			{
+			case PowerUpType::MultiBall:
+				MultiBall(gd.isMultiBallActive, gd.ball);
+				break;
+			case PowerUpType::SlowDown:
+				SpeedDown(gd.slowDownPowerUp, gd.ball);
+				break;
+			case PowerUpType::HpUp:
+				HpUp(gd.lives);
+				break;
+			case PowerUpType::None:
+			default:
+
+				break;
+			}
 			bricks[i].isActive = false;
 			gd.brokenBricks++;
 			break;

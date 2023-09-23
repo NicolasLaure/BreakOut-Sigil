@@ -31,6 +31,12 @@ void BallSwitchDirX(Ball& ball)
 	ball.dir.x *= -1;
 }
 
+void ResetBallSpeed(Ball& ball)
+{
+	ball.speed = ball.prevSpeed;
+	ball.isSlowedDown = false;
+}
+
 void ResetBall(Ball& ball)
 {
 	ball.position = ball.startPosition;

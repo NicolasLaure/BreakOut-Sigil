@@ -2,6 +2,7 @@
 #include "Objects/Paddle.h"
 #include "Objects/Ball.h"
 #include "Objects/Brick.h"
+#include "Objects/PowerUp.h"
 
 struct GameData
 {
@@ -33,5 +34,8 @@ struct GameData
 
 	float powerUpRespawnCoolDown = 5.0f;
 	float powerUpTimer = 0;
+
+	SlowDown slowDownPowerUp = { 5,0,false };
+	bool isMultiBallActive = false;
 	Brick bricks[bricksQty];
 };
