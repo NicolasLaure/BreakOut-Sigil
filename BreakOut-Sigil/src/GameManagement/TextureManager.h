@@ -4,6 +4,7 @@ enum class TextureIdentifier
 {
 	BackGround,
 	Paddle,
+	Brick,
 	PaddleHitted,
 	PlayerHpHitted
 };
@@ -14,6 +15,7 @@ struct Textures
 	int paddle;
 	int paddleHitted;
 	int playerHpHitted;
+	int brick;
 };
 
 void SetTextures();

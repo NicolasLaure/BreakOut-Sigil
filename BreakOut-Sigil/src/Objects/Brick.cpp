@@ -1,4 +1,5 @@
 #include "Objects/Brick.h"
+#include "GameManagement/TextureManager.h"
 #include "sl.h"
 
 void BricksDraw(Brick bricks[], int bricksQty)
@@ -8,7 +9,8 @@ void BricksDraw(Brick bricks[], int bricksQty)
 		if (bricks[i].isActive)
 		{
 			slSetForeColor(bricks[i].color.r, bricks[i].color.g, bricks[i].color.b, 1);
-			slRectangleFill(bricks[i].rect.position.x, bricks[i].rect.position.y, bricks[i].rect.width, bricks[i].rect.height);
+			slSprite(GetTexture(TextureIdentifier::Brick), bricks[i].rect.position.x, bricks[i].rect.position.y, bricks[i].rect.width, bricks[i].rect.height);
+			//slRectangleFill(bricks[i].rect.position.x, bricks[i].rect.position.y, bricks[i].rect.width, bricks[i].rect.height);
 		}
 	}
 }
@@ -36,7 +38,7 @@ void ResetBricks(Brick bricks[], int bricksQty, int windowUpperLimit)
 		{
 			bricks[j].isActive = true;
 
-			bricks[j].rect.position.x = bricks[j].rect.width / 2 + windowLateralLimit + (horizontalDisplacement) * counter;
+			bricks[j].rect.position.x = bricks[j].rect.width / 2 + windowLateralLimit + (horizontalDisplacement)*counter;
 			bricks[j].rect.position.y = GetScreenHeight() - bricks[j].rect.height / 2 - windowUpperLimit - verticalDisplacement * i;
 
 			switch (i)
@@ -59,7 +61,7 @@ void ResetBricks(Brick bricks[], int bricksQty, int windowUpperLimit)
 			default:
 				break;
 			}
-			
+
 			counter++;
 			if (counter >= 10)
 				counter = 0;
