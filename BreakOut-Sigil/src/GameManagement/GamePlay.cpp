@@ -352,6 +352,9 @@ void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
 			}
 			else
 			{
+				if (ball.position.y - ball.radius < brickDown && ball.dir.y > 0)
+					BallSwitchDirY(ball);
+				else if (ball.position.y + ball.radius < brickUp && ball.dir.y < 0)
 					BallSwitchDirY(ball);
 			}
 

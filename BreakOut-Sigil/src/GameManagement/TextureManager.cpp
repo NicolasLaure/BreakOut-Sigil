@@ -6,10 +6,13 @@ static Textures textures;
 void SetTextures()
 {
 	textures.backGround = slLoadTexture("assets/textures/SpaceBackground.png");
-	textures.paddle= slLoadTexture("assets/textures/PaddleNormal.png");
+	textures.paddle = slLoadTexture("assets/textures/PaddleNormal.png");
 	textures.paddleHitted = slLoadTexture("assets/textures/PaddleHit.png");
 	textures.playerHpHitted = slLoadTexture("assets/textures/HitBloodScreen.png");
 	textures.brick = slLoadTexture("assets/textures/BrickTexture.png");
+	textures.brickMultiBall = slLoadTexture("assets/textures/BrickTextureMultiBall.png");
+	textures.brickHpUp = slLoadTexture("assets/textures/BrickTextureHpUp.png");
+	textures.brickSlowDown = slLoadTexture("assets/textures/BrickTextureSlowDown.png");
 }
 int GetTexture(TextureIdentifier texture)
 {
@@ -29,6 +32,15 @@ int GetTexture(TextureIdentifier texture)
 		break;
 	case TextureIdentifier::Brick:
 		return textures.brick;
+		break;
+	case TextureIdentifier::BrickMultiBall:
+		return textures.brickMultiBall;
+		break;
+	case TextureIdentifier::BrickHpUp:
+		return textures.brickHpUp;
+		break;
+	case TextureIdentifier::BrickSlowDown:
+		return textures.brickSlowDown;
 		break;
 	default:
 		break;
