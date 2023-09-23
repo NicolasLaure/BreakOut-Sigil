@@ -76,7 +76,7 @@ void ResetBricks(Brick bricks[], int bricksQty, int windowUpperLimit)
 			default:
 				break;
 			}
-
+			bricks[j].powerUp = PowerUpType::None;
 			counter++;
 			if (counter >= 10)
 				counter = 0;
