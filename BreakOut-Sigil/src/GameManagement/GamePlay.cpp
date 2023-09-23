@@ -55,30 +55,31 @@ void GameUpdate()
 	{
 		Vector2 paddleNewPos = { Clampf(0 + gd.player.rect.width / 2, GetScreenWidth() - gd.player.rect.width / 2, slGetMouseX()),  gd.player.paddleSpacingFromBottom };
 		PadTranslate(gd.player, paddleNewPos);
-
-		if (slGetKey(SL_KEY_ESCAPE) && gd.isEscapePressed == false)
-		{
-			gd.isPaused = true;
-			gd.isEscapePressed = true;
-		}
-		else if (!slGetKey(SL_KEY_ESCAPE))
-			gd.isEscapePressed = false;
-
 		BallUpdate(gd.ball);
 	}
 	else
 	{
-		if (slGetMouseButton(0))
+		DirOscillation(gd.ball);
+		if (slGetMouseButton(0) && !gd.isMouseLeftPressed)
 		{
 			gd.objectsCanMove = true;
 		}
-		else
+		else if (!slGetMouseButton(0))
 		{
-			DirOscillation(gd.ball);
+			gd.isMouseLeftPressed = false;
 		}
 	}
 
+	if (slGetMouseButton(1) && gd.isMouseRightPressed == false)
+	{
+		gd.isPaused = true;
+		gd.isMouseRightPressed = true;
+	}
+	else if (!slGetMouseButton(1))
+		gd.isMouseRightPressed = false;
+
 	gd.powerUpTimer += slGetDeltaTime();
+
 	if (gd.powerUpTimer >= gd.powerUpRespawnCoolDown)
 	{
 		gd.powerUpTimer = 0;
@@ -90,8 +91,10 @@ void GameUpdate()
 		if (gd.hitTimer >= slGetTime())
 			gd.hasTakenDamage = false;
 	}
+
 	PowerUpsUpdate(gd.slowDownPowerUp, gd.ball);
 	CollisionUpdate();
+
 	if (gd.lives <= 0)
 	{
 		gd.isGameOver = true;
@@ -124,52 +127,52 @@ void PauseUpdate(Scenes& scene)
 {
 	if (gd.areRulesBeingShown)
 	{
-		if (slGetKey(32) && !gd.isSpacePressed)
+		if (slGetMouseButton(0) && !gd.isMouseLeftPressed)
 		{
-			gd.isSpacePressed = true;
+			gd.isMouseLeftPressed = true;
 			gd.isPaused = false;
 			gd.areRulesBeingShown = false;
 		}
-		else if (!slGetKey(32))
-			gd.isSpacePressed = false;
+		else if (!slGetMouseButton(0))
+			gd.isMouseLeftPressed = false;
 	}
 	else if (gd.isGameOver || gd.hasWon)
 	{
-		if (slGetKey(SL_KEY_ESCAPE) && !gd.isEscapePressed)
+		if (slGetMouseButton(1) && !gd.isMouseRightPressed)
 		{
 			gd.isGameOver = false;
-			gd.isEscapePressed = true;
+			gd.isMouseRightPressed = true;
 			scene = Scenes::Menu;
 		}
-		else if (!slGetKey(SL_KEY_ESCAPE))
-			gd.isEscapePressed = false;
+		else if (!slGetMouseButton(1))
+			gd.isMouseRightPressed = false;
 
-		if (slGetKey(32) && !gd.isSpacePressed)
+		if (slGetKey(32) && !gd.isMouseLeftPressed)
 		{
-			gd.isSpacePressed = true;
+			gd.isMouseLeftPressed = true;
 			gd.justRestarted = true;
 		}
 		else if (!slGetKey(32))
-			gd.isSpacePressed = false;
+			gd.isMouseLeftPressed = false;
 
 	}
 	else
 	{
-		if (slGetKey(SL_KEY_ESCAPE) && gd.isEscapePressed == false)
+		if (slGetMouseButton(1) && gd.isMouseRightPressed == false)
 		{
 			gd.isPaused = false;
-			gd.isEscapePressed = true;
+			gd.isMouseRightPressed = true;
 		}
-		else if (!slGetKey(SL_KEY_ESCAPE))
-			gd.isEscapePressed = false;
+		else if (!slGetMouseButton(1))
+			gd.isMouseRightPressed = false;
 
-		if (slGetKey(32) && !gd.isSpacePressed)
+		if (slGetKey(32) && !gd.isMouseLeftPressed)
 		{
-			gd.isSpacePressed = true;
+			gd.isMouseLeftPressed = true;
 			scene = Scenes::Menu;
 		}
 		else if (!slGetKey(32))
-			gd.isSpacePressed = false;
+			gd.isMouseLeftPressed = false;
 	}
 }
 
@@ -191,7 +194,7 @@ void PauseDraw()
 		int titleSize = 150;
 		int rulesSize = 40;
 		const char* winConditionText = "destroy all bricks to win";
-		const char* pressAnyKeyText = "Press space to start the game";
+		const char* pressAnyKeyText = "Click anywhere to start the game";
 
 		int rulesPositionY = GetScreenHeight() / 2 + 50;
 		slSetForeColor(colors.WHITE.r, colors.WHITE.g, colors.WHITE.b, 1);
@@ -238,7 +241,7 @@ void PauseDraw()
 		const char* pauseTitle = "Game is Paused";
 		int titleSize = 80;
 
-		const char* backToMenuText = "Press Space to go to Main Menu";
+		const char* backToMenuText = "Press Right click to go Unpause";
 		int backToMenuSize = 40;
 
 		slSetForeColor(colors.WHITE.r, colors.WHITE.g, colors.WHITE.b, 1);
@@ -397,6 +400,7 @@ void ResetGameStats()
 	gd.hasWon = false;
 	gd.isPaused = true;
 	gd.areRulesBeingShown = true;
+	gd.hasTakenDamage = false;
 	//gd.isPowerUpSpawned = false;
 	gd.ball.speed = gd.ball.baseSpeed;
 	gd.objectsCanMove = false;

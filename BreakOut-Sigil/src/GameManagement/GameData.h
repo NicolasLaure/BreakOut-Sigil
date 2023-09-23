@@ -15,8 +15,8 @@ struct GameData
 	bool justRestarted = false;
 	bool objectsCanMove = false;
 
-	bool isEscapePressed = false;
-	bool isSpacePressed = false;
+	bool isMouseRightPressed = false;
+	bool isMouseLeftPressed = false;
 
 	int score = 0;
 	int lives = 3;
