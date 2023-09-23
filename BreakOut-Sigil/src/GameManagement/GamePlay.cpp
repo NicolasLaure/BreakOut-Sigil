@@ -77,6 +77,12 @@ void GameUpdate()
 		}
 	}
 
+	if (gd.hasTakenDamage)
+	{
+		if (gd.hitTimer >= slGetTime())
+			gd.hasTakenDamage = false;
+	}
+
 	CollisionUpdate();
 	if (gd.lives <= 0)
 	{
@@ -102,6 +108,8 @@ void GameDraw()
 	PaddleDraw(gd.player);
 	BricksDraw(gd.bricks, gd.bricksQty);
 	DrawHud(gd.lives, gd.score, gd.windowUpperLimit);
+	if (gd.hasTakenDamage)
+		slSprite(GetTexture(TextureIdentifier::PlayerHpHitted), GetScreenWidth() / 2, GetScreenHeight() / 2, GetScreenWidth(), GetScreenHeight());
 }
 
 void PauseUpdate(Scenes& scene)
@@ -250,6 +258,9 @@ void BallBorderCollision()
 		ResetPlayer(gd.player);
 		gd.objectsCanMove = false;
 		gd.lives--;
+		gd.hasTakenDamage = true;
+		gd.hitTimer = slGetTime() + gd.hitFrameDuration;
+
 		if (gd.lives <= 0)
 		{
 			gd.isGameOver = true;
@@ -318,22 +329,26 @@ void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
 			if (ball.position.x - ball.radius < brickLeft && ball.position.y < brickUp && ball.position.y > brickDown)
 			{
 				ball.position.x = brickLeft - ball.radius;
-				BallSwitchDirX(ball);
+				if (ball.dir.x > 0)
+					BallSwitchDirX(ball);
 			}
 			else if (ball.position.x + ball.radius > brickRight && ball.position.y < brickUp && ball.position.y > brickDown)
 			{
 				ball.position.x = brickRight + ball.radius;
-				BallSwitchDirX(ball);
+				if (ball.dir.x < 0)
+					BallSwitchDirX(ball);
 			}
 			else if (ball.position.y + ball.radius > brickUp && ball.position.x < brickRight && ball.position.x > brickLeft)
 			{
 				ball.position.y = brickUp + ball.radius;
-				BallSwitchDirY(ball);
+				if (ball.dir.y < 0)
+					BallSwitchDirY(ball);
 			}
 			else if (ball.position.y - ball.radius < brickDown && ball.position.x < brickRight && ball.position.x > brickLeft)
 			{
 				ball.position.y = brickDown - ball.radius;
-				BallSwitchDirY(ball);
+				if (ball.dir.y > 0)
+					BallSwitchDirY(ball);
 			}
 
 			bricks[i].isActive = false;

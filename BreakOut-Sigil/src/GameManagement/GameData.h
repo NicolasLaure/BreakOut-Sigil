@@ -26,5 +26,10 @@ struct GameData
 
 	static const int bricksQty = 50;
 	int brokenBricks = 0;
+
+	bool hasTakenDamage = false;
+	float hitFrameDuration = 0.5f;
+	float hitTimer = 0;
+
 	Brick bricks[bricksQty];
 };

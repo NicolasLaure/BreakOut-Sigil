@@ -21,38 +21,6 @@ void BallDraw(Ball& ball)
 	slCircleFill(ball.position.x, ball.position.y, ball.radius, 50);
 }
 
-void RandomServe(Ball& ball, bool isFirstServe)
-{
-	/*float value = 0;
-	float randX;
-	if (isFirstServe)
-	{
-		value = GetRandomValue(-9, 9) * 0.1f;
-		if (value <= 0.3f && value >= 0) value = 0.4f;
-		if (value >= -0.3f && value < 0) value = -0.4f;
-		randX = value;
-	}
-	else
-		randX = ball.dir.x;
-	if (GetRandomValue(0, 1) == 0)
-	{
-		if (value < 0)
-			value = value * -1 - 1;
-		else
-			value -= 1.0f;
-	}
-	else
-	{
-		if (value < 0)
-			value += 1.0f;
-		else
-			value = 1.0f - value;
-	}
-
-	float randY = value;
-	ball.dir = Vector2Normalize({ randX, randY });*/
-}
-
 void BallSwitchDirY(Ball& ball)
 {
 	ball.dir.y *= -1;

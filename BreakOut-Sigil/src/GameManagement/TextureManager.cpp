@@ -8,6 +8,7 @@ void SetTextures()
 	textures.backGround = slLoadTexture("assets/textures/SpaceBackground.png");
 	textures.paddle= slLoadTexture("assets/textures/PaddleNormal.png");
 	textures.paddleHitted = slLoadTexture("assets/textures/PaddleHit.png");
+	textures.playerHpHitted = slLoadTexture("assets/textures/HitBloodScreen.png");
 }
 int GetTexture(TextureIdentifier texture)
 {
@@ -21,6 +22,10 @@ int GetTexture(TextureIdentifier texture)
 		break;
 	case TextureIdentifier::PaddleHitted:
 		return textures.paddleHitted;
+		break;
+	case TextureIdentifier::PlayerHpHitted:
+		return textures.playerHpHitted;
+		break;
 	default:
 		break;
 	}
