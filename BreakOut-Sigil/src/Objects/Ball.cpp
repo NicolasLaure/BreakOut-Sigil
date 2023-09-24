@@ -41,6 +41,7 @@ void ResetBall(Ball& ball)
 {
 	ball.position = ball.startPosition;
 	ball.speed = ball.baseSpeed;
+	ball.isActive = true;
 }
 
 void DirOscillation(Ball& ball)

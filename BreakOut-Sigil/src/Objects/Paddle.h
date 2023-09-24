@@ -19,6 +19,6 @@ public:
 void PadInit(Paddle& paddle, Vector2 position, bool isPlayerOne);
 void PadMove(Paddle& paddle, Vector2 dir);
 void PadTranslate(Paddle& paddle, Vector2 newPosition);
-void PaddleDraw(Paddle player);
+void PaddleDraw(Paddle paddle);
 
 void ResetPlayer(Paddle& player);

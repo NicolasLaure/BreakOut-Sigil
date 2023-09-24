@@ -9,7 +9,9 @@ struct GameData
 	bool areRulesBeingShown = false;
 	bool isPaused = false;
 	Paddle player{};
-	Ball ball{};
+	Ball mainBall{};
+	Ball secondBall{};
+	Ball thirdBall{};
 
 	bool isGameOver = false;
 	bool justRestarted = false;

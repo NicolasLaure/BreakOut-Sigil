@@ -17,7 +17,7 @@ void PauseDraw();
 void ResetGameStats();
 
 void CollisionUpdate();
-void BallBorderCollision();
+void BallBorderCollision(Ball& ball);
 void BallPaddleCollision(Ball& ball, Paddle& player);
 void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty);
 
@@ -44,7 +44,7 @@ void GameLoop(bool enteredNewScene, Scenes& scene)
 
 void GameStart()
 {
-	BallInit(gd.ball);
+	BallInit(gd.mainBall);
 	BricksInit(gd.bricks, gd.bricksQty);
 	ResetGameStats();
 }
@@ -55,11 +55,16 @@ void GameUpdate()
 	{
 		Vector2 paddleNewPos = { Clampf(0 + gd.player.rect.width / 2, GetScreenWidth() - gd.player.rect.width / 2, slGetMouseX()),  gd.player.paddleSpacingFromBottom };
 		PadTranslate(gd.player, paddleNewPos);
-		BallUpdate(gd.ball);
+		BallUpdate(gd.mainBall);
+		if (gd.isMultiBallActive)
+		{
+			BallUpdate(gd.secondBall);
+			BallUpdate(gd.thirdBall);
+		}
 	}
 	else
 	{
-		DirOscillation(gd.ball);
+		DirOscillation(gd.mainBall);
 		if (slGetMouseButton(0) && !gd.isMouseLeftPressed)
 		{
 			gd.objectsCanMove = true;
@@ -83,7 +88,7 @@ void GameUpdate()
 	if (gd.powerUpTimer >= gd.powerUpRespawnCoolDown)
 	{
 		gd.powerUpTimer = 0;
-		SetPowerUp(gd.bricks, gd.bricksQty);
+		SetPowerUp(gd.bricks, gd.bricksQty, gd.bricksQty - gd.brokenBricks, gd.isMultiBallActive);
 	}
 
 	if (gd.hasTakenDamage)
@@ -91,8 +96,11 @@ void GameUpdate()
 		if (gd.hitTimer >= slGetTime())
 			gd.hasTakenDamage = false;
 	}
+	if (gd.isMultiBallActive)
+		PowerUpsUpdate(gd.slowDownPowerUp, gd.mainBall, gd.secondBall, gd.thirdBall);
+	else
+		PowerUpsUpdate(gd.slowDownPowerUp, gd.mainBall);
 
-	PowerUpsUpdate(gd.slowDownPowerUp, gd.ball);
 	CollisionUpdate();
 
 	if (gd.lives <= 0)
@@ -112,9 +120,23 @@ void GameDraw()
 	//slSetBackColor(colors.LIGHT_GRAY.r, colors.LIGHT_GRAY.g, colors.LIGHT_GRAY.b);
 	slSetForeColor(colors.WHITE.r, colors.WHITE.g, colors.WHITE.b, 1);
 	slSprite(GetTexture(TextureIdentifier::BackGround), 0 + GetScreenWidth() / 2, 0 + GetScreenHeight() / 2, GetScreenWidth(), GetScreenHeight());
-	BallDraw(gd.ball);
+
+	if (gd.isMultiBallActive)
+	{
+		if (gd.mainBall.isActive)
+			BallDraw(gd.mainBall);
+
+		if (gd.secondBall.isActive)
+			BallDraw(gd.secondBall);
+
+		if (gd.thirdBall.isActive)
+			BallDraw(gd.thirdBall);
+	}
+	else
+		BallDraw(gd.mainBall);
+
 	if (!gd.objectsCanMove)
-		DirDraw(gd.ball);
+		DirDraw(gd.mainBall);
 
 	PaddleDraw(gd.player);
 	BricksDraw(gd.bricks, gd.bricksQty);
@@ -254,18 +276,59 @@ void PauseDraw()
 
 void CollisionUpdate()
 {
-	BallBorderCollision();
-	BallPaddleCollision(gd.ball, gd.player);
-	BallBrickCollision(gd.ball, gd.bricks, gd.bricksQty);
+
+	if (gd.isMultiBallActive)
+	{
+		if (gd.mainBall.isActive)
+		{
+			BallBorderCollision(gd.mainBall);
+			BallPaddleCollision(gd.mainBall, gd.player);
+			BallBrickCollision(gd.mainBall, gd.bricks, gd.bricksQty);
+		}
+		if (gd.secondBall.isActive)
+		{
+			BallBorderCollision(gd.secondBall);
+			BallPaddleCollision(gd.secondBall, gd.player);
+			BallBrickCollision(gd.secondBall, gd.bricks, gd.bricksQty);
+		}
+
+		if (gd.thirdBall.isActive)
+		{
+			BallBorderCollision(gd.thirdBall);
+			BallPaddleCollision(gd.thirdBall, gd.player);
+			BallBrickCollision(gd.thirdBall, gd.bricks, gd.bricksQty);
+		}
+
+		if (!gd.mainBall.isActive && !gd.secondBall.isActive && !gd.thirdBall.isActive)
+		{
+			gd.isMultiBallActive = false;
+			ResetBall(gd.mainBall);
+			ResetPlayer(gd.player);
+			gd.objectsCanMove = false;
+		}
+	}
+	else
+	{
+		BallBorderCollision(gd.mainBall);
+		BallPaddleCollision(gd.mainBall, gd.player);
+		BallBrickCollision(gd.mainBall, gd.bricks, gd.bricksQty);
+	}
 }
 
-void BallBorderCollision()
+void BallBorderCollision(Ball& ball)
 {
-	if (gd.ball.position.y <= 0)
+	if (ball.position.y <= 0)
 	{
-		ResetBall(gd.ball);
-		ResetPlayer(gd.player);
-		gd.objectsCanMove = false;
+		if (!gd.isMultiBallActive)
+		{
+			ResetBall(gd.mainBall);
+			ResetPlayer(gd.player);
+			gd.objectsCanMove = false;
+		}
+		else
+		{
+			ball.isActive = false;
+		}
 		gd.lives--;
 		gd.hasTakenDamage = true;
 		gd.hitTimer = slGetTime() + gd.hitFrameDuration;
@@ -275,33 +338,33 @@ void BallBorderCollision()
 			gd.isGameOver = true;
 			return;
 		}
-
-		BallSwitchDirY(gd.ball);
 	}
-	else if (gd.ball.position.y + gd.ball.radius >= GetScreenHeight() - gd.windowUpperLimit)
+	else if (ball.position.y + ball.radius >= GetScreenHeight() - gd.windowUpperLimit)
 	{
-		gd.ball.position.y = GetScreenHeight() - gd.windowUpperLimit - gd.ball.radius;
-		BallSwitchDirY(gd.ball);
+		ball.position.y = GetScreenHeight() - gd.windowUpperLimit - ball.radius;
+		BallSwitchDirY(ball);
 	}
 
-	if (gd.ball.position.x - gd.ball.radius <= 0)
+	if (ball.position.x - ball.radius <= 0)
 	{
-		gd.ball.position.x = 0 + gd.ball.radius;
-		BallSwitchDirX(gd.ball);
+		ball.position.x = 0 + ball.radius;
+		BallSwitchDirX(ball);
 	}
-	else if (gd.ball.position.x >= GetScreenWidth())
+	else if (ball.position.x >= GetScreenWidth())
 	{
-		gd.ball.position.x = GetScreenWidth() - gd.ball.radius;
-		BallSwitchDirX(gd.ball);
+		ball.position.x = GetScreenWidth() - ball.radius;
+		BallSwitchDirX(ball);
 	}
 }
 
 void BallPaddleCollision(Ball& ball, Paddle& player)
 {
-	if (ball.position.x + ball.radius >= player.rect.position.x - player.rect.width / 2
-		&& ball.position.x <= player.rect.position.x + player.rect.width / 2
-		&& ball.position.y + ball.radius >= player.rect.position.y - player.rect.height / 2
-		&& ball.position.y <= player.rect.position.y + player.rect.height / 2)
+	player.isColliding = false;
+
+	if (ball.position.x + ball.radius >= player.rect.position.x - player.rect.width / 2 &&
+		ball.position.x <= player.rect.position.x + player.rect.width / 2 &&
+		ball.position.y + ball.radius >= player.rect.position.y - player.rect.height / 2 &&
+		ball.position.y <= player.rect.position.y + player.rect.height / 2)
 	{
 		ball.position.y = player.rect.position.y + (player.rect.height / 2) + ball.radius;
 		float angle = atanf((ball.position.x - player.rect.position.x) / (player.rect.height / 2 - player.rect.position.y)) + deg2rad(90);
@@ -318,9 +381,6 @@ void BallPaddleCollision(Ball& ball, Paddle& player)
 
 		player.isColliding = true;
 	}
-	else
-		player.isColliding = false;
-
 }
 
 void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
@@ -372,10 +432,13 @@ void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty)
 			switch (bricks[i].powerUp)
 			{
 			case PowerUpType::MultiBall:
-				MultiBall(gd.isMultiBallActive, gd.ball);
+				MultiBall(gd.isMultiBallActive, gd.mainBall, gd.secondBall, gd.thirdBall);
 				break;
 			case PowerUpType::SlowDown:
-				SpeedDown(gd.slowDownPowerUp, gd.ball);
+				if (gd.isMultiBallActive)
+					SpeedDown(gd.slowDownPowerUp, gd.mainBall, gd.secondBall, gd.thirdBall);
+				else
+					SpeedDown(gd.slowDownPowerUp, gd.mainBall);
 				break;
 			case PowerUpType::HpUp:
 				HpUp(gd.lives);
@@ -402,11 +465,12 @@ void ResetGameStats()
 	gd.areRulesBeingShown = true;
 	gd.hasTakenDamage = false;
 	//gd.isPowerUpSpawned = false;
-	gd.ball.speed = gd.ball.baseSpeed;
+	gd.mainBall.speed = gd.mainBall.baseSpeed;
+	gd.isMultiBallActive = false;
 	gd.objectsCanMove = false;
 	gd.brokenBricks = 0;
 	//gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
-	ResetBall(gd.ball);
+	ResetBall(gd.mainBall);
 	ResetPlayer(gd.player);
 	ResetBricks(gd.bricks, gd.bricksQty, gd.windowUpperLimit);
 }

@@ -9,10 +9,12 @@ struct SlowDown
 	bool isActive{};
 };
 
-void MultiBall(bool& isMultiBallActive, Ball ball);
+void MultiBall(bool& isMultiBallActive, Ball& ball, Ball& secondBall, Ball& thirdBall);
 void SpeedDown(SlowDown& slowDown, Ball& ball);
+void SpeedDown(SlowDown& slowDown, Ball& ball, Ball& secondBall, Ball& thirdBall);
 void HpUp(int& Hp);
 
 void PowerUpsUpdate(SlowDown& slowDown, Ball& ball);
+void PowerUpsUpdate(SlowDown& slowDown, Ball& ball, Ball& secondBall, Ball& thirdBall);
 
-void SetPowerUp(Brick bricks[], int brickQty);
+void SetPowerUp(Brick bricks[], int bricksQty, int bricksLeft, bool isMultiBallActive);

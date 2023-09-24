@@ -18,6 +18,7 @@ public:
 	bool isSlowedDown = false;
 	bool dirIncreasing = false;
 
+	bool isActive = false;
 	Color color = colors.BLACK;
 };
 
