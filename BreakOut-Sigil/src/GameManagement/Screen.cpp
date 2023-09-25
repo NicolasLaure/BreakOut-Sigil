@@ -1,13 +1,16 @@
 #include "GameManagement/Screen.h"
 
-
-static Screen mainScreen = { 1280,720 };
-
-int GetScreenWidth()
+namespace game
 {
-	return mainScreen.screenWidth;
-}
-int GetScreenHeight()
-{
-	return mainScreen.screenHeight;
-}
+	static Screen mainScreen = { 1280,720 };
+
+	int GetScreenWidth()
+	{
+		return mainScreen.screenWidth;
+	}
+	int GetScreenHeight()
+	{
+		return mainScreen.screenHeight;
+	}
+
+};

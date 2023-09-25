@@ -2,26 +2,30 @@
 #include "Objects/Button.h"
 #include "GameManagement/Scenes.h"
 
-void MenuStart();
-void MenuUpdate(Scenes& scene);
-void MenuDraw();
-
-struct MenuData
+namespace game
 {
-	const char* title = "Breakout";
-	int titleSize = 80;
-	int titleLimitSpacing = 70;
+	void MenuStart();
+	void MenuUpdate(Scenes& scene);
+	void MenuDraw();
 
-	const char* credits = "Created By Nico Laure";
-	int creditsSize = 30;
+	struct MenuData
+	{
+		const char* title = "Breakout";
+		int titleSize = 80;
+		int titleLimitSpacing = 70;
 
-	static const int buttonsQty = 2;
-	Button scenesButtons[buttonsQty] = {
-		{{0,0}, Scenes::Game, "Play"},
-		{{0,0}, Scenes::GameQuit,"Exit Game"}
+		const char* credits = "Created By Nico Laure";
+		int creditsSize = 30;
+
+		static const int buttonsQty = 2;
+		Button scenesButtons[buttonsQty] = {
+			{{0,0}, Scenes::Game, "Play"},
+			{{0,0}, Scenes::GameQuit,"Exit Game"}
+		};
+
+		bool isMousePressed = false;
+		int windowLimitSpacing = 20;
+		Button creditsButton = { {0,0}, Scenes::Menu, credits };
 	};
 
-	bool isMousePressed = false;
-	int windowLimitSpacing = 20;
-	Button creditsButton = { {0,0}, Scenes::Menu, credits };
 };

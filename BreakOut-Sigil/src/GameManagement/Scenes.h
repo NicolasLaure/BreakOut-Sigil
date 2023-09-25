@@ -1,9 +1,12 @@
 #pragma once
 
-enum class Scenes
+namespace game
 {
-	Menu,
-	Game,
-	Options,
-	GameQuit
+	enum class Scenes
+	{
+		Menu,
+		Game,
+		Options,
+		GameQuit
+	};
 };

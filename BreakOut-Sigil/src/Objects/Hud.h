@@ -1,4 +1,7 @@
 #pragma once
 
 
-void DrawHud(int playerLives, int score, int upperLimit);
+namespace game
+{
+	void DrawHud(int playerLives, int score, int upperLimit);
+};

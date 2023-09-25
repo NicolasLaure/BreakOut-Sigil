@@ -4,40 +4,48 @@
 #include "Objects/Brick.h"
 #include "Objects/PowerUp.h"
 
-struct GameData
+namespace game
 {
-	bool areRulesBeingShown = false;
-	bool isPaused = false;
-	Paddle player{};
-	Ball mainBall{};
-	Ball secondBall{};
-	Ball thirdBall{};
+	struct GameData
+	{
+		bool areRulesBeingShown = false;
+		bool isPaused = false;
+		Paddle player{};
+		Ball mainBall{};
+		Ball secondBall{};
+		Ball thirdBall{};
 
-	bool isGameOver = false;
-	bool justRestarted = false;
-	bool objectsCanMove = false;
+		bool isGameOver = false;
+		bool justRestarted = false;
+		bool objectsCanMove = false;
 
-	bool isMouseRightPressed = false;
-	bool isMouseLeftPressed = false;
+		bool isMouseRightPressed = false;
+		bool isMouseLeftPressed = false;
 
-	int score = 0;
-	int lives = 3;
-	int maxLives = 3;
-	bool hasWon = false;
+		int score = 0;
+		const int scoreMultiplier = 10;
+		float scoreReductionTimer = 0;
 
-	int windowUpperLimit = 80;
+		int lives = 3;
+		int maxLives = 3;
+		bool hasWon = false;
 
-	static const int bricksQty = 50;
-	int brokenBricks = 0;
+		int windowUpperLimit = 80;
 
-	bool hasTakenDamage = false;
-	float hitFrameDuration = 0.5f;
-	float hitTimer = 0;
+		static const int bricksQty = 50;
+		int brokenBricks = 0;
 
-	float powerUpRespawnCoolDown = 5.0f;
-	float powerUpTimer = 0;
+		bool hasTakenDamage = false;
+		float hitFrameDuration = 0.5f;
+		float hitTimer = 0;
 
-	SlowDown slowDownPowerUp = { 5,0,false };
-	bool isMultiBallActive = false;
-	Brick bricks[bricksQty];
+		float powerUpRespawnCoolDown = 5.0f;
+		float powerUpTimer = 0;
+
+		SlowDown slowDownPowerUp = { 5,0,false };
+		bool isMultiBallActive = false;
+		int activeBalls = 1;
+		Brick bricks[bricksQty];
+	};
+
 };

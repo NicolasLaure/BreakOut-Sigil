@@ -9,61 +9,63 @@
 #include "GameManagement/TextureManager.h"
 
 using namespace std;
-
-static SceneManager sceneManager;
-
-void Initialize();
-void ProgramLoop();
-
-void RunGame()
+namespace game
 {
-	Initialize();
-	ProgramLoop();
-	slClose();
-}
+	static SceneManager sceneManager;
 
-void Initialize()
-{
-	slWindow(GetScreenWidth(), GetScreenHeight(), "Elemental Pong", 0);
-	srand(time(nullptr));
-	SetTextures();
+	void Initialize();
+	void ProgramLoop();
 
-	int font = slLoadFont("assets/ZenDots-Regular.ttf");
-	slSetFont(font, 20);
-	sceneManager.scene = Scenes::Menu;
-	sceneManager.prevScene = Scenes::GameQuit;
-	sceneManager.enteredNewScene = false;
-
-	sceneManager.isSinglePlayer = false;
-	sceneManager.isPaused = false;
-}
-
-void ProgramLoop()
-{
-	do
+	void RunGame()
 	{
-		sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
-		sceneManager.prevScene = sceneManager.scene;
+		Initialize();
+		ProgramLoop();
+		slClose();
+	}
 
-		switch (sceneManager.scene)
+	void Initialize()
+	{
+		slWindow(GetScreenWidth(), GetScreenHeight(), "Elemental Pong", 0);
+		srand(time(nullptr));
+		SetTextures();
+
+		int font = slLoadFont("assets/ZenDots-Regular.ttf");
+		slSetFont(font, 20);
+		sceneManager.scene = Scenes::Menu;
+		sceneManager.prevScene = Scenes::GameQuit;
+		sceneManager.enteredNewScene = false;
+
+		sceneManager.isSinglePlayer = false;
+		sceneManager.isPaused = false;
+	}
+
+	void ProgramLoop()
+	{
+		do
 		{
-		case Scenes::GameQuit:
-			break;
-		case Scenes::Menu:
-			if (sceneManager.enteredNewScene)
-				MenuStart();
+			sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
+			sceneManager.prevScene = sceneManager.scene;
 
-			MenuUpdate(sceneManager.scene);
-			MenuDraw();
-			break;
-		case Scenes::Game:
-			GameLoop(sceneManager.enteredNewScene, sceneManager.scene);
-			break;
-		default:
-			break;
-		}
+			switch (sceneManager.scene)
+			{
+			case Scenes::GameQuit:
+				break;
+			case Scenes::Menu:
+				if (sceneManager.enteredNewScene)
+					MenuStart();
 
-		slRender();
+				MenuUpdate(sceneManager.scene);
+				MenuDraw();
+				break;
+			case Scenes::Game:
+				GameLoop(sceneManager.enteredNewScene, sceneManager.scene);
+				break;
+			default:
+				break;
+			}
 
-	} while (sceneManager.scene != Scenes::GameQuit && !slShouldClose());
-}
+			slRender();
+
+		} while (sceneManager.scene != Scenes::GameQuit && !slShouldClose());
+	}
+};

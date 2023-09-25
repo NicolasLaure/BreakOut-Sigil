@@ -1,12 +1,15 @@
 #pragma once
 #include "GameManagement/Scenes.h"
 
-struct SceneManager
+namespace game
 {
-	Scenes scene;
-	Scenes prevScene;
-	bool enteredNewScene;
+	struct SceneManager
+	{
+		Scenes scene;
+		Scenes prevScene;
+		bool enteredNewScene;
 
-	bool isSinglePlayer;
-	bool isPaused = false;
+		bool isSinglePlayer;
+		bool isPaused = false;
+	};
 };

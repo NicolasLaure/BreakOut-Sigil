@@ -1,7 +1,11 @@
 #pragma once
 
-struct Screen
+
+namespace game
 {
-	int screenWidth{};
-	int screenHeight{};
+	struct Screen
+	{
+		int screenWidth{};
+		int screenHeight{};
+	};
 };

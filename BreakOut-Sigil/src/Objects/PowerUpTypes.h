@@ -1,9 +1,13 @@
 #pragma once
 
-enum class PowerUpType
+
+namespace game
 {
-	MultiBall,
-	SlowDown,
-	HpUp,
-	None
+	enum class PowerUpType
+	{
+		MultiBall,
+		SlowDown,
+		HpUp,
+		None
+	};
 };
