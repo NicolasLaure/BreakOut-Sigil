@@ -1,4 +1,5 @@
 #include "GameManagement/Gameplay.h"
+
 #include "GameManagement/Utilities.h"
 #include "GameManagement/GameData.h"
 #include "GameManagement/TextureManager.h"
@@ -14,12 +15,13 @@ void GameDraw();
 void PauseUpdate(Scenes& scene);
 void PauseDraw();
 
-void ResetGameStats();
 
 void CollisionUpdate();
 void BallBorderCollision(Ball& ball);
 void BallPaddleCollision(Ball& ball, Paddle& player);
 void BallBrickCollision(Ball& ball, Brick bricks[], int bricksQty);
+
+void ResetGameStats();
 
 void GameLoop(bool enteredNewScene, Scenes& scene)
 {

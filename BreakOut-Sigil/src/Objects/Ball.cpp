@@ -1,4 +1,5 @@
 #include "Objects/Ball.h"
+
 #include <math.h>
 
 void BallInit(Ball& ball)

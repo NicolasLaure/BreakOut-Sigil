@@ -30,8 +30,8 @@ void BallDraw(Ball& ball);
 void BallSwitchDirY(Ball& ball);
 void BallSwitchDirX(Ball& ball);
 
-void ResetBall(Ball& ball);
 void ResetBallSpeed(Ball& ball);
+void ResetBall(Ball& ball);
 
 void DirOscillation(Ball& ball);
 void DirDraw(Ball& ball);

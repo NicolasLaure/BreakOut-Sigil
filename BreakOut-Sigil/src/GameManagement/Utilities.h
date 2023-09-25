@@ -1,7 +1,9 @@
 #pragma once
-#include "sl.h"
-#include "GameManagement/Color.h"
 #include <cmath>
+
+#include "sl.h"
+
+#include "GameManagement/Color.h"
 
 struct Vector2
 {

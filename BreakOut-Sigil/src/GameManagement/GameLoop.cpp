@@ -1,10 +1,12 @@
 #include "GameManagement/GameLoop.h"
+
+#include <iostream>
+
 #include "GameManagement/Menu.h"
 #include "GameManagement/SceneManager.h"
 #include "GameManagement/Gameplay.h"
 #include "GameManagement/Screen.h"
 #include "GameManagement/TextureManager.h"
-#include <iostream>
 
 using namespace std;
 

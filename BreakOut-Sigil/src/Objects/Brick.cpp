@@ -1,6 +1,8 @@
 #include "Objects/Brick.h"
-#include "GameManagement/TextureManager.h"
+
 #include "sl.h"
+
+#include "GameManagement/TextureManager.h"
 
 void BricksDraw(Brick bricks[], int bricksQty)
 {

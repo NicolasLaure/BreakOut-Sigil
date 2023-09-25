@@ -1,6 +1,8 @@
 #include "Objects/PowerUp.h"
-#include "Objects/PowerUpTypes.h"
+
 #include <iostream>
+
+#include "Objects/PowerUpTypes.h"
 
 
 void MultiBall(bool& isMultiBallActive, Ball& ball, Ball& secondBall, Ball& thirdBall)

@@ -1,6 +1,9 @@
 #include "Objects/Hud.h"
-#include "GameManagement/Utilities.h"
+
 #include <string>
+
+#include "GameManagement/Utilities.h"
+
 using namespace std;
 
 void DrawHud(int playerLives, int score, int upperLimit)
