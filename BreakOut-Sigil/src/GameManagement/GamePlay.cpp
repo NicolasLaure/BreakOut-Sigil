@@ -367,7 +367,7 @@ namespace game
 			ball.position.x = 0 + ball.radius;
 			BallSwitchDirX(ball);
 		}
-		else if (ball.position.x >= GetScreenWidth())
+		else if (ball.position.x + ball.radius >= GetScreenWidth())
 		{
 			ball.position.x = GetScreenWidth() - ball.radius;
 			BallSwitchDirX(ball);
@@ -379,9 +379,9 @@ namespace game
 		player.isColliding = false;
 
 		if (ball.position.x + ball.radius >= player.rect.position.x - player.rect.width / 2 &&
-			ball.position.x <= player.rect.position.x + player.rect.width / 2 &&
+			ball.position.x - ball.radius <= player.rect.position.x + player.rect.width / 2 &&
 			ball.position.y + ball.radius >= player.rect.position.y - player.rect.height / 2 &&
-			ball.position.y <= player.rect.position.y + player.rect.height / 2)
+			ball.position.y - ball.radius <= player.rect.position.y + player.rect.height / 2)
 		{
 			ball.position.y = player.rect.position.y + (player.rect.height / 2) + ball.radius;
 			float angle = atanf((ball.position.x - player.rect.position.x) / (player.rect.height / 2 - player.rect.position.y)) + deg2rad(90);
@@ -441,9 +441,15 @@ namespace game
 				else
 				{
 					if (ball.position.y - ball.radius < brickDown && ball.dir.y > 0)
+					{
+						ball.position.y = brickDown - ball.radius;
 						BallSwitchDirY(ball);
+					}
 					else if (ball.position.y + ball.radius < brickUp && ball.dir.y < 0)
+					{
+						ball.position.y = brickUp + ball.radius;
 						BallSwitchDirY(ball);
+					}
 				}
 
 				switch (bricks[i].powerUp)
