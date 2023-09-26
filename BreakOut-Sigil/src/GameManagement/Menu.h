@@ -10,7 +10,7 @@ namespace game
 
 	struct MenuData
 	{
-		const char* title = "Breakout";
+		const char* title = "SpaceOut";
 		int titleSize = 80;
 		int titleLimitSpacing = 70;
 

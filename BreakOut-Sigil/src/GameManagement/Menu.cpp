@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "TextureManager.h"
+
 namespace game
 {
 	MenuData menuData;
@@ -34,11 +36,10 @@ namespace game
 			menuData.isMousePressed = false;
 	}
 
-	
-
 	void MenuDraw()
 	{
-		slSetBackColor(colorsData.BLACK.r, colorsData.BLACK.g, colorsData.BLACK.b);
+		slSetForeColor(colorsData.WHITE.r, colorsData.WHITE.g, colorsData.WHITE.b, 1);
+		slSprite(GetTexture(TextureIdentifier::BackGround), GetScreenWidth() / 2, GetScreenHeight() / 2, GetScreenWidth(), GetScreenHeight());
 		slSetFontSize(menuData.titleSize);
 		slSetForeColor(colorsData.WHITE.r, colorsData.WHITE.g, colorsData.WHITE.b, 1);
 		slText(GetScreenWidth() / 2 - slGetTextWidth(menuData.title) / 2, GetScreenHeight() - menuData.titleLimitSpacing, menuData.title);
@@ -54,5 +55,4 @@ namespace game
 			slText(button.buttonRect.position.x, button.buttonRect.position.y, button.text);
 		}
 	}
-
 };
