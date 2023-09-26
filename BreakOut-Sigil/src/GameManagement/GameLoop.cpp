@@ -25,7 +25,7 @@ namespace game
 
 	void Initialize()
 	{
-		slWindow(GetScreenWidth(), GetScreenHeight(), "Elemental Pong", 0);
+		slWindow(GetScreenWidth(), GetScreenHeight(), "SpaceOut", 0);
 		srand(time(nullptr));
 		SetTextures();
 
