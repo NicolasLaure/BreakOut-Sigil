@@ -17,4 +17,8 @@ namespace game
 		float textHeightSpacerMultiplier = 2.25f;
 		float textPositionX = 15;
 	};
+
+	void CreditsButtonCollisionCheck(Button& button, bool& isMousePressed);
+	void ButtonCollisionCheck(Button& button, Scenes& scene, bool& isMousePressed);
+	void ResetButtonCollisionCheck(Button& button, bool& restartGame, bool& isMousePressed);
 };

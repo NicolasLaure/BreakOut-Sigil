@@ -49,6 +49,9 @@
     <ClCompile Include="src\Objects\PowerUp.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Objects\Button.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GameManagement\GameData.h">

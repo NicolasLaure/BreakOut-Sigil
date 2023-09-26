@@ -172,6 +172,7 @@ xcopy /y "$(SolutionDir)assets" "$(OutDir)assets"</Command>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\Ball.cpp" />
     <ClCompile Include="src\Objects\Brick.cpp" />
+    <ClCompile Include="src\Objects\Button.cpp" />
     <ClCompile Include="src\Objects\Hud.cpp" />
     <ClCompile Include="src\Objects\Paddle.cpp" />
     <ClCompile Include="src\Objects\PowerUp.cpp" />

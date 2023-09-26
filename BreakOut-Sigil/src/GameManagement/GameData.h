@@ -25,6 +25,7 @@ namespace game
 		int score = 0;
 		const int scoreMultiplier = 10;
 		float scoreReductionTimer = 0;
+		int highScore = 0;
 
 		int lives = 3;
 		int maxLives = 3;
@@ -46,6 +47,10 @@ namespace game
 		bool isMultiBallActive = false;
 		int activeBalls = 1;
 		Brick bricks[bricksQty];
+
+		int buttonsFontSize = 50;
+		Button restartButton = { {0,0}, Scenes::Game, "Restart" };
+		Button menuButton = { {0,0}, Scenes::Menu, "Main Menu" };
 	};
 
 };

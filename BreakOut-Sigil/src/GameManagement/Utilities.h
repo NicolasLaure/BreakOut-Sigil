@@ -16,8 +16,8 @@ namespace game
 	struct Rect
 	{
 		Vector2 position{};
-		float height{};
 		float width{};
+		float height{};
 	};
 
 	static colors::Colors colorsData;

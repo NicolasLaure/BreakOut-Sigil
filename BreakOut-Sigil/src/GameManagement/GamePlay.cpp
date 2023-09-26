@@ -1,10 +1,15 @@
 #include "GameManagement/Gameplay.h"
 
+#include <string>
+
+#include "Objects/Button.h"
 #include "GameManagement/Utilities.h"
 #include "GameManagement/GameData.h"
 #include "GameManagement/TextureManager.h"
 #include "Objects/Hud.h"
 #include "Objects/PowerUp.h"
+
+using namespace std;
 
 namespace game
 {
@@ -53,6 +58,15 @@ namespace game
 		BallInit(gd.mainBall);
 		BricksInit(gd.bricks, gd.bricksQty);
 		ResetGameStats();
+
+		int buttonLimitSpacing = 50;
+		int buttonsSpacing = 100;
+		slSetFontSize(gd.buttonsFontSize);
+		Vector2 textSize = { static_cast<float>(slGetTextWidth(gd.menuButton.text)), static_cast<float>(slGetTextHeight(gd.menuButton.text)) };
+		gd.menuButton.buttonRect = { { static_cast<float>(GetScreenWidth() / 2) - textSize.x / 2, 0.0f + buttonLimitSpacing }, textSize.x, textSize.y };
+
+		textSize = { static_cast<float>(slGetTextWidth(gd.restartButton.text)),static_cast<float>(slGetTextHeight(gd.restartButton.text)) };
+		gd.restartButton.buttonRect = { { static_cast<float>(GetScreenWidth() / 2) - textSize.x / 2, 0.0f + buttonLimitSpacing + buttonsSpacing }, textSize.x, textSize.y };
 	}
 
 	void GameUpdate()
@@ -69,7 +83,7 @@ namespace game
 			}
 
 			gd.scoreReductionTimer += slGetDeltaTime();
-			if (gd.scoreReductionTimer >= 1)
+			if (gd.scoreReductionTimer >= 1 && !gd.isPaused)
 			{
 				if (gd.score > 0)
 					gd.score--;
@@ -127,6 +141,8 @@ namespace game
 		{
 			gd.isPaused = true;
 			gd.hasWon = true;
+			if (gd.score > gd.highScore)
+				gd.highScore = gd.score;
 		}
 	}
 
@@ -184,14 +200,8 @@ namespace game
 			else if (!slGetMouseButton(1))
 				gd.isMouseRightPressed = false;
 
-			if (slGetKey(32) && !gd.isMouseLeftPressed)
-			{
-				gd.isMouseLeftPressed = true;
-				gd.justRestarted = true;
-			}
-			else if (!slGetKey(32))
-				gd.isMouseLeftPressed = false;
-
+			ButtonCollisionCheck(gd.menuButton, scene, gd.isMouseLeftPressed);
+			ResetButtonCollisionCheck(gd.restartButton, gd.justRestarted, gd.isMouseLeftPressed);
 		}
 		else
 		{
@@ -203,13 +213,8 @@ namespace game
 			else if (!slGetMouseButton(1))
 				gd.isMouseRightPressed = false;
 
-			if (slGetKey(32) && !gd.isMouseLeftPressed)
-			{
-				gd.isMouseLeftPressed = true;
-				scene = Scenes::Menu;
-			}
-			else if (!slGetKey(32))
-				gd.isMouseLeftPressed = false;
+			ButtonCollisionCheck(gd.menuButton, scene, gd.isMouseLeftPressed);
+			ResetButtonCollisionCheck(gd.restartButton, gd.justRestarted, gd.isMouseLeftPressed);
 		}
 	}
 
@@ -223,7 +228,7 @@ namespace game
 		slRectangleFill(GetScreenWidth() / 2, GetScreenHeight() / 2, GetScreenWidth(), GetScreenHeight());
 
 		int titleWindowLimitSpacing = 120;
-		int pressKeyWindowLimitSpacing = 60;
+		int pressKeyWindowLimitSpacing = 120;
 
 		if (gd.areRulesBeingShown)
 		{
@@ -245,33 +250,45 @@ namespace game
 		{
 			const char* gameOverTitle = "Game Over";
 			int titleSize = 130;
-			int gameOverSize = 40;
-			const char* pressEscapeKeyText = "escape to go back to main menu";
-			const char* pressSpaceKeyText = "space to restart the game";
 
 			int rulesPositionY = GetScreenHeight() / 2 + 50;
 			slSetForeColor(colorsData.WHITE.r, colorsData.WHITE.g, colorsData.WHITE.b, 1);
 			slSetFontSize(titleSize);
 			slText(GetScreenWidth() / 2 - slGetTextWidth(gameOverTitle) / 2, GetScreenHeight() - titleWindowLimitSpacing, gameOverTitle);
-			slSetFontSize(gameOverSize);
-			slText(GetScreenWidth() / 2 - slGetTextWidth(pressEscapeKeyText) / 2, 0 + pressKeyWindowLimitSpacing, pressEscapeKeyText);
-			slText(GetScreenWidth() / 2 - slGetTextWidth(pressSpaceKeyText) / 2, 0 + pressKeyWindowLimitSpacing / 2, pressSpaceKeyText);
+
+			slSetFontSize(gd.buttonsFontSize);
+			slSetForeColor(gd.menuButton.currentTextColor.r, gd.menuButton.currentTextColor.g, gd.menuButton.currentTextColor.b, 1);
+			slText(gd.menuButton.buttonRect.position.x, gd.menuButton.buttonRect.position.y, gd.menuButton.text);
+
+			slSetForeColor(gd.restartButton.currentTextColor.r, gd.restartButton.currentTextColor.g, gd.restartButton.currentTextColor.b, 1);
+			slText(gd.restartButton.buttonRect.position.x, gd.restartButton.buttonRect.position.y, gd.restartButton.text);
 		}
 		else if (gd.hasWon)
 		{
 			const char* gameOverTitle = "You Win!";
 			int titleSize = 130;
+
 			int gameOverSize = 40;
-			const char* pressEscapeKeyText = "escape to go back to main menu";
-			const char* pressSpaceKeyText = "space to restart the game";
+
+			string scoreText = "Score: " + to_string(gd.score);
+			string highScore = "High Score: " + to_string(gd.highScore);
 
 			int rulesPositionY = GetScreenHeight() / 2 + 50;
 			slSetForeColor(colorsData.WHITE.r, colorsData.WHITE.g, colorsData.WHITE.b, 1);
 			slSetFontSize(titleSize);
 			slText(GetScreenWidth() / 2 - slGetTextWidth(gameOverTitle) / 2, GetScreenHeight() - titleWindowLimitSpacing, gameOverTitle);
 			slSetFontSize(gameOverSize);
-			slText(GetScreenWidth() / 2 - slGetTextWidth(pressEscapeKeyText) / 2, 0 + pressKeyWindowLimitSpacing, pressEscapeKeyText);
-			slText(GetScreenWidth() / 2 - slGetTextWidth(pressSpaceKeyText) / 2, 0 + pressKeyWindowLimitSpacing / 2, pressSpaceKeyText);
+
+			int scoresOffset = 40;
+			slText(GetScreenWidth() / 2 - slGetTextWidth(scoreText.c_str()) / 2, GetScreenHeight() / 2 - scoresOffset, scoreText.c_str());
+			slText(GetScreenWidth() / 2 - slGetTextWidth(highScore.c_str()) / 2, GetScreenHeight() / 2 + scoresOffset, highScore.c_str());
+
+			slSetFontSize(gd.buttonsFontSize);
+			slSetForeColor(gd.menuButton.currentTextColor.r, gd.menuButton.currentTextColor.g, gd.menuButton.currentTextColor.b, 1);
+			slText(gd.menuButton.buttonRect.position.x, gd.menuButton.buttonRect.position.y, gd.menuButton.text);
+
+			slSetForeColor(gd.restartButton.currentTextColor.r, gd.restartButton.currentTextColor.g, gd.restartButton.currentTextColor.b, 1);
+			slText(gd.restartButton.buttonRect.position.x, gd.restartButton.buttonRect.position.y, gd.restartButton.text);
 		}
 		else
 		{
@@ -285,7 +302,14 @@ namespace game
 			slSetFontSize(titleSize);
 			slText(GetScreenWidth() / 2 - slGetTextWidth(pauseTitle) / 2, GetScreenHeight() - titleWindowLimitSpacing - slGetTextHeight(pauseTitle) / 2, pauseTitle);
 			slSetFontSize(backToMenuSize);
-			slText(GetScreenWidth() / 2 - slGetTextWidth(backToMenuText) / 2, 0 + pressKeyWindowLimitSpacing, backToMenuText);
+			slText(GetScreenWidth() / 2 - slGetTextWidth(backToMenuText) / 2, GetScreenHeight() / 2, backToMenuText);
+
+			slSetFontSize(gd.buttonsFontSize);
+			slSetForeColor(gd.menuButton.currentTextColor.r, gd.menuButton.currentTextColor.g, gd.menuButton.currentTextColor.b, 1);
+			slText(gd.menuButton.buttonRect.position.x, gd.menuButton.buttonRect.position.y, gd.menuButton.text);
+
+			slSetForeColor(gd.restartButton.currentTextColor.r, gd.restartButton.currentTextColor.g, gd.restartButton.currentTextColor.b, 1);
+			slText(gd.restartButton.buttonRect.position.x, gd.restartButton.buttonRect.position.y, gd.restartButton.text);
 		}
 	}
 
@@ -476,7 +500,6 @@ namespace game
 				gd.brokenBricks++;
 				gd.score += gd.scoreMultiplier * gd.activeBalls;
 				break;
-
 			}
 		}
 	}
@@ -491,12 +514,12 @@ namespace game
 		gd.isPaused = true;
 		gd.areRulesBeingShown = true;
 		gd.hasTakenDamage = false;
-		//gd.isPowerUpSpawned = false;
+
 		gd.mainBall.speed = gd.mainBall.baseSpeed;
 		gd.isMultiBallActive = false;
 		gd.objectsCanMove = false;
 		gd.brokenBricks = 0;
-		//gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
+
 		ResetBall(gd.mainBall);
 		ResetPlayer(gd.player);
 		ResetBricks(gd.bricks, gd.bricksQty, gd.windowUpperLimit);

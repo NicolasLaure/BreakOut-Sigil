@@ -10,7 +10,7 @@ namespace game
 	{
 	public:
 		bool isPlayer1{};
-		Rect rect = { {}, 25, 200 };
+		Rect rect = { {}, 200, 25 };
 		float baseSpeed = 1000;
 		float speed = 1000;
 		Color color = colorsData.WHITE;
