@@ -236,14 +236,16 @@ namespace game
 			int titleSize = 150;
 			int rulesSize = 40;
 			const char* winConditionText = "destroy all bricks to win";
+			const char* controlsText = "Left Click to shoot / Right Click to pause";
 			const char* pressAnyKeyText = "Click anywhere to start the game";
 
-			int rulesPositionY = GetScreenHeight() / 2 + 50;
+			int rulesPositionY = GetScreenHeight() / 2 + 75;
 			slSetForeColor(colorsData.WHITE.r, colorsData.WHITE.g, colorsData.WHITE.b, 1);
 			slSetFontSize(titleSize);
 			slText(GetScreenWidth() / 2 - slGetTextWidth(rulesTitle) / 2, GetScreenHeight() - titleWindowLimitSpacing, rulesTitle);
 			slSetFontSize(rulesSize);
 			slText(GetScreenWidth() / 2 - slGetTextWidth(winConditionText) / 2, rulesPositionY, winConditionText);
+			slText(GetScreenWidth() / 2 - slGetTextWidth(controlsText) / 2, GetScreenHeight() / 2, controlsText);
 			slText(GetScreenWidth() / 2 - slGetTextWidth(pressAnyKeyText) / 2, 0 + pressKeyWindowLimitSpacing, pressAnyKeyText);
 		}
 		else if (gd.isGameOver)
