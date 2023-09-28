@@ -229,7 +229,7 @@ namespace game
 				const char* rulesTitle = "Rules";
 				int titleSize = 150;
 				int rulesSize = 40;
-				const char* winConditionText = "destroy all bricks to win";
+				const char* winConditionText = "Destroy all bricks to win";
 				const char* controlsText = "Left Click to shoot / Right Click to pause";
 				const char* pressAnyKeyText = "Click anywhere to start the game";
 
